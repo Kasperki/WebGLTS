@@ -2,12 +2,13 @@
     "compilerOptions": {
         "target": "es5",
         "module": "amd",
-        "outFile": "build/WebGLTS.js",
-        "sourceMap": true,
-        "watch": true
+        "outDir": "./build",
+        "watch": true,
+        "pretty": true,
+        "rootDir": "./src",
+        "listFiles": true
     },
-    "files": [
-        "WebGLTS.ts",
-        "Shaders.ts"
+    "exclude": [ 
+        "**.js"
     ]
 }

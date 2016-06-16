@@ -1,7 +1,7 @@
 /**
  * InitShaders
  */
-function initShaders(gl: WebGLRenderingContext) {
+export function initShaders(gl: WebGLRenderingContext) {
   var fragmentShader = getShader(gl, "shader-fs");
   var vertexShader = getShader(gl, "shader-vs");
 
@@ -20,6 +20,11 @@ function initShaders(gl: WebGLRenderingContext) {
 
   let vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
   gl.enableVertexAttribArray(vertexPositionAttribute);
+
+  let vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+  gl.enableVertexAttribArray(vertexColorAttribute);
+
+  return {shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute, vertexColorAttribute: vertexColorAttribute};
 }
 
 //
