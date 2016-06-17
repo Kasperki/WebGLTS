@@ -1,7 +1,8 @@
 /**
  * InitShaders
  */
-export function initShaders(gl: WebGLRenderingContext) {
+export function initShaders(gl: WebGLRenderingContext) 
+{
   var fragmentShader = getShader(gl, "shader-fs");
   var vertexShader = getShader(gl, "shader-vs");
 
@@ -33,7 +34,8 @@ export function initShaders(gl: WebGLRenderingContext) {
 // Loads a shader program by scouring the current document,
 // looking for a script with the specified ID.
 //
-function getShader(gl, id) {
+function getShader(gl, id) 
+{
   var shaderScript = <HTMLScriptElement>document.getElementById(id);
 
   // Didn't find an element with the specified ID; abort.
