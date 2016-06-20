@@ -11,13 +11,12 @@ let muodot: DrawableObject[];
 
 //TODO
  //Nice way to move, rotate, scale
- //Change color
  //Other shapes... interfaces. refactoring
  //Input
  //Time
 //Scenes?
 
-let timeSpent = 0;
+let timeSpent = 0; let a = 0;
 function render() 
 {
   
@@ -29,11 +28,24 @@ function render()
 
   //SetPerspective
   let pMatrix = Matrix4x4.Identity();
-  pMatrix.matrix = Utils.makePerspective(120, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
+  pMatrix.matrix = Utils.makePerspective(60, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
 
+  a += 0.01;
   //IterateAndDrawAllObjects
-  for(let i = 0; i < muodot.length; i++) {
+  for(let i = 0; i < muodot.length; i++) {  
+    let org = muodot[i].position;
+    
+    muodot[i].color = new Color(i / muodot.length, Math.sin(a), Math.tan(a), 1);
+    
+    let pos = new Vector3(muodot[i].position.x * Math.tan(a), muodot[i].position.y, -20 + muodot[i].position.z * Math.sin(a));
+    muodot[i].position = pos;
+    
+    muodot[i].axis = new Vector3(1,1,1);
+    muodot[i].rot = a * 100;
+
     muodot[i].RenderObject(pMatrix);
+
+    muodot[i].position = org;
   }
 }
 
@@ -87,7 +99,7 @@ export function start()
           muodot.push(new DrawableObject(gl, shaderProgram, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
         }
       }
-
+      
       setInterval(renderLoop, 1000 / TARGET_FPS);
     }
 }

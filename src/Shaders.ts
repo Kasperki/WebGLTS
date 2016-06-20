@@ -23,9 +23,8 @@ export function initShaders(gl: WebGLRenderingContext)
   gl.enableVertexAttribArray(vertexPositionAttribute);
 
   let vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
-  gl.enableVertexAttribArray(vertexColorAttribute);
 
-  return {shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute, vertexColorAttribute: vertexColorAttribute};
+  return {shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute};
 }
 
 //

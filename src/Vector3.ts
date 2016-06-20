@@ -8,6 +8,7 @@ export class Vector3
     public z:number;
 
     public static One = new Vector3(1,1,1);
+    public static Zero = new Vector3(0,0,0);
 
     constructor(x: number, y: number, z: number) 
     {
