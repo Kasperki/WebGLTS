@@ -1,5 +1,6 @@
 import * as Utils from "./Utils";
 import {Color} from "./Color";
+import {Time} from "Time";
 import {Matrix4x4} from "Matrix4x4";
 import {Vector3} from "Vector3";
 import {initShaders} from "Shaders";
@@ -7,13 +8,14 @@ import {DrawableObject} from "./DrawableObject";
 
 var gl; // A global variable for the WebGL context
 const TARGET_FPS = 60; //Target fps for the webgl program
+let time : Time;
+
 let muodot: DrawableObject[];
 
 //TODO
  //Nice way to move, rotate, scale
  //Other shapes... interfaces. refactoring
  //Input
- //Time
 //Scenes?
 
 let timeSpent = 0; let a = 0;
@@ -53,10 +55,11 @@ function renderLoop()
 {
 	render();
 
-  document.getElementById("glfps").innerHTML = countFPS();
+  time.countDeltaTime();
+  document.getElementById("glfps").innerHTML = "FPS:" + countFPS() + " Dtime:" + time.getDeltaTime().toString() + " time:" + time.getTime();
 }
 
-let fps: number = 0, currentFPS:number = 0, time:number = 0;
+let fps: number = 0, currentFPS:number = 0, frameTime:number = 0;
 
 /**
  * Counts fps on the program
@@ -65,9 +68,9 @@ let fps: number = 0, currentFPS:number = 0, time:number = 0;
 function countFPS(): string 
 {
   fps++;
-  if (new Date().getTime() >= time) {
+  if (new Date().getTime() >= frameTime) {
     currentFPS = fps; fps = 0;
-    time = new Date().getTime() + 1000;
+    frameTime = new Date().getTime() + 1000;
   }
 
   return currentFPS.toString();
@@ -90,6 +93,10 @@ export function start()
       //Init shaders
       let shaderProgram = initShaders(gl);
 
+      //Init Custom Classes
+      time = new Time();
+
+      //Init game
       muodot = new Array();
 
       //TODO CRAETE ALL OBJECTS HERE :)
