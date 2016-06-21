@@ -1,6 +1,7 @@
 import * as Utils from "./Utils";
 import {Color} from "./Color";
 import {Time} from "Time";
+import {Input} from "Input";
 import {Matrix4x4} from "Matrix4x4";
 import {Vector3} from "Vector3";
 import {initShaders} from "Shaders";
@@ -8,7 +9,8 @@ import {DrawableObject} from "./DrawableObject";
 
 var gl; // A global variable for the WebGL context
 const TARGET_FPS = 60; //Target fps for the webgl program
-let time : Time;
+let time: Time;
+let input: Input;
 
 let muodot: DrawableObject[];
 
@@ -53,9 +55,11 @@ function render()
 
 function renderLoop() 
 {
-	render();
-
+  render();
+ 
+ 	input.Update();
   time.countDeltaTime();
+  
   document.getElementById("glfps").innerHTML = "FPS:" + countFPS() + " Dtime:" + time.getDeltaTime().toString() + " time:" + time.getTime();
 }
 
@@ -95,6 +99,7 @@ export function start()
 
       //Init Custom Classes
       time = new Time();
+      input = new Input();
 
       //Init game
       muodot = new Array();
