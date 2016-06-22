@@ -1,13 +1,18 @@
+import {Vector3} from "Vector3";
 /**
  * Input
  * handles all input
+ * KeyCodes: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key#Key_values
  */
+let canvasRect;
+
 export class Input 
 {
     private static keys: boolean[];
     private static keysdown: boolean[];
     private static keysdownStart: boolean[];
     private static keysup: boolean[];
+    public static mousePosition: Vector3;
 
     constructor () 
     {
@@ -16,25 +21,41 @@ export class Input
         Input.keysdownStart = new Array();
         Input.keysup = new Array();
 
+        document.onmousemove = this.handleMouseMove;
         document.onkeydown = this.handleKeyDown;
         document.onkeyup = this.handleKeyUp;
+
+        Input.mousePosition = new Vector3(0,0,0);
+        canvasRect = document.getElementById('glcanvas').getBoundingClientRect();
+    }
+
+    //Does not work if dom changes after load. then must calculate boundingClientRect again
+    private handleMouseMove(event: MouseEvent) 
+    {
+        Input.mousePosition.x = event.clientX - canvasRect.left;
+        Input.mousePosition.y = event.clientY - canvasRect.top;
+        console.log(Input.mousePosition);  //TODO REMOVE
     }
 
     private handleKeyDown(event: KeyboardEvent) 
     {
-        Input.keys[event.keyCode] = true;
+        let key = event.key.toLowerCase();   
         
-        if (!Input.keysdownStart[event.keyCode]) {
-            Input.keysdownStart[event.keyCode] = true;
-            Input.keysdown[event.keyCode] = true;
+        Input.keys[key] = true;
+
+        if (!Input.keysdownStart[key]) {
+            Input.keysdownStart[key] = true;
+            Input.keysdown[key] = true;
         }
     }
 
     private handleKeyUp(event: KeyboardEvent) 
     {
-        Input.keys[event.keyCode] = false;
-        Input.keysdownStart[event.keyCode] = false;
-        Input.keysup[event.keyCode] = true;
+        let key = event.key.toLowerCase(); 
+        
+        Input.keys[key] = false;
+        Input.keysdownStart[key] = false;
+        Input.keysup[key] = true;
     }
 
     /**
@@ -54,7 +75,7 @@ export class Input
      */
     public static GetKey(keyCode: string) 
     {
-        if (this.keys[keyCode.charCodeAt(0)])
+        if (this.keys[keyCode.toLowerCase()])
             return true;
         else 
             return false;
@@ -67,7 +88,7 @@ export class Input
      */
     public static GetKeyDown(keyCode: string)
     {
-        if (this.keysdown[keyCode.charCodeAt(0)])
+        if (this.keysdown[keyCode.toLowerCase()])
             return true;
         else 
             return false;
@@ -80,7 +101,7 @@ export class Input
      */
     public static GetKeyUp(keyCode: string)  
     {
-        if (this.keysup[keyCode.charCodeAt(0)])
+        if (this.keysup[keyCode.toLowerCase()])
             return true;
         else 
             return false;

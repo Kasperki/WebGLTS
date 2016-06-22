@@ -1,7 +1,7 @@
 import * as Utils from "./Utils";
 import {Color} from "./Color";
 import {Time} from "Time";
-import {Input} from "Input";
+import {Input} from "Input/Input";
 import {Matrix4x4} from "Matrix4x4";
 import {Vector3} from "Vector3";
 import {initShaders} from "Shaders";
@@ -55,8 +55,11 @@ function render()
 
 function renderLoop() 
 {
+  //ProjectStuff
   render();
  
+
+  //EngineStuff
  	input.Update();
   time.countDeltaTime();
   
