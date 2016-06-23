@@ -2,6 +2,7 @@ import * as Utils from "./Utils";
 import {Color} from "./Color";
 import {Time} from "Time";
 import {Input} from "Input/Input";
+import {MouseCode} from "Input/MouseCode";
 import {Matrix4x4} from "Matrix4x4";
 import {Vector3} from "Vector3";
 import {initShaders} from "Shaders";
@@ -16,8 +17,8 @@ let muodot: DrawableObject[];
 
 //TODO
  //Nice way to move, rotate, scale
- //Other shapes... interfaces. refactoring
- //Input
+ //Other shapes... interfaces. refactoring BOX, LINE, TRIANGLE : Inherit from DrawableObject, 
+  //COMBINE THESE MESHES WITH SAME SHADER TO REDUCE DRAWCALLS!!!
 //Scenes?
 
 let timeSpent = 0; let a = 0;
@@ -58,7 +59,6 @@ function renderLoop()
   //ProjectStuff
   render();
  
-
   //EngineStuff
  	input.Update();
   time.countDeltaTime();

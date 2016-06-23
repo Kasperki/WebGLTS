@@ -15,6 +15,10 @@ export class Matrix4x4
     {
     }
 
+    /**
+     * Creates identity matrix
+     * @return Matrix4x4
+     */
     public static Identity() : Matrix4x4 
     {    
         let matrix = new Matrix4x4();
@@ -29,6 +33,10 @@ export class Matrix4x4
         return matrix;
     }
 
+    /**
+     * Translate matrix
+     * @param {Vector3} vector
+     */
     public Translate(vector: Vector3) 
     {
         let x = vector.x, y = vector.y, z = vector.z;
@@ -38,6 +46,10 @@ export class Matrix4x4
         this.matrix[15] = this.matrix[3] * x + this.matrix[7] * y + this.matrix[11] * z + this.matrix[15];
     }
 
+    /**
+     * Scales matrix
+     * @param {Vector3} scale
+     */
     public Scale(scale: Vector3)
     {
         this.matrix[0] *= scale.x;
@@ -45,6 +57,12 @@ export class Matrix4x4
         this.matrix[10] *= scale.z;
     }
 
+    /**
+     * Rotate matrix
+     * @param {Number} degrees
+     * @param {Vector3} axis
+     * @return Matrix4x4
+     */
     public Rotate(degrees, axis: Vector3) : Matrix4x4
     {
         let x = axis.x, y = axis.y, z = axis.z;
@@ -86,6 +104,10 @@ export class Matrix4x4
         return this;
     }
 
+    /**
+     * Return matrix in string
+     * @return {String}
+     */
     public toString() : string 
     {
         return this.matrix.toString(); 
