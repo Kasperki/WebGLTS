@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
 
-    <script src="system.js"></script>
+    <script  src="require.js"></script>
     <script>
-        System.config({
-            defaultJSExtensions : true,
-            baseURL: './build',
+        requirejs.config({
+            baseUrl: 'build'
         });
 
-        // loads /build/WebGLTS.js
-        System.import('WebGLTS.js').then(function(webgl) {
-            webgl.start(); //Start webgl
-        });;
+        requirejs(['build/WebGLTS.js'], function(webgl) {
+            webgl.start();
+        });
     </script>
 
     <title>WebGL - Typescript</title>
 </head>
 <body>
     <!-- WebGL canvas -->
-    <p id="glfps"></p> <!-- FPS -->
+    <p id="glfps">FPS:</p> <!-- FPS -->
     <canvas id="glcanvas" width="640" height="480">
         Your browser doesn't appear to support the 
         <code>&lt;canvas&gt;</code> element.

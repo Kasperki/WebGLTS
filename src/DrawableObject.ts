@@ -33,6 +33,9 @@ export class DrawableObject
         this.InitBuffers();
     }
 
+    /**
+     * Init vertices
+     */
     public InitBuffers() : void
     {
         //VERTICES
@@ -49,6 +52,9 @@ export class DrawableObject
         this.squareVertexPositionBuffer.numItems = 4;
     }
 
+    /**
+     * Renders object
+     */
     public RenderObject(pMatrix) : void
     {  
         //Translate Position

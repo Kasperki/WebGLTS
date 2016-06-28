@@ -17,11 +17,24 @@ export class Vector3
         this.z = z;
     }
 
+    /**
+     * Adds Vectors together
+     * @param {Vector3} v
+     */
     public Add(v: Vector3)
     {
         this.x += v.x;
         this.y += v.y;
         this.z += v.z;
+    }
+
+    /**
+    * Returns vector in string
+    * @return {string}
+    */
+    public toString = () : string => 
+    {
+        return "X:" + this.x + " Y:" + this.y + " Z:" + this.z;
     }
 }
 

@@ -1,21 +1,30 @@
-import * as Utils from "./Utils";
-import {Color} from "./Color";
+import * as Utils from "Utils";
+import {Color} from "Color";
 import {Time} from "Time";
+import {Input} from "Input/Input";
+import {MouseCode} from "Input/MouseCode";
 import {Matrix4x4} from "Matrix4x4";
 import {Vector3} from "Vector3";
 import {initShaders} from "Shaders";
-import {DrawableObject} from "./DrawableObject";
+import {DrawableObject} from "DrawableObject";
 
 var gl; // A global variable for the WebGL context
 const TARGET_FPS = 60; //Target fps for the webgl program
-let time : Time;
+let time: Time;
+let input: Input;
 
 let muodot: DrawableObject[];
 
 //TODO
  //Nice way to move, rotate, scale
- //Other shapes... interfaces. refactoring
- //Input
+ //Other shapes... interfaces. refactoring BOX, LINE, TRIANGLE : Inherit from DrawableObject, 
+  //COMBINE THESE MESHES WITH SAME SHADER TO REDUCE DRAWCALLS!!!
+ //SHADER Modifying
+  //textures
+  //lightning
+ //TEXT
+ //CAMERA
+ //Advanced shaders, speculars etc....
 //Scenes?
 
 let timeSpent = 0; let a = 0;
@@ -53,9 +62,13 @@ function render()
 
 function renderLoop() 
 {
-	render();
-
+  //ProjectStuff
+  render();
+ 
+  //EngineStuff
+ 	input.Update();
   time.countDeltaTime();
+  
   document.getElementById("glfps").innerHTML = "FPS:" + countFPS() + " Dtime:" + time.getDeltaTime().toString() + " time:" + time.getTime();
 }
 
@@ -95,6 +108,7 @@ export function start()
 
       //Init Custom Classes
       time = new Time();
+      input = new Input();
 
       //Init game
       muodot = new Array();
