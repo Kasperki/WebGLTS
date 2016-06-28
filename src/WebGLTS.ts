@@ -1,12 +1,12 @@
-import * as Utils from "./Utils";
-import {Color} from "./Color";
+import * as Utils from "Utils";
+import {Color} from "Color";
 import {Time} from "Time";
 import {Input} from "Input/Input";
 import {MouseCode} from "Input/MouseCode";
 import {Matrix4x4} from "Matrix4x4";
 import {Vector3} from "Vector3";
 import {initShaders} from "Shaders";
-import {DrawableObject} from "./DrawableObject";
+import {DrawableObject} from "DrawableObject";
 
 var gl; // A global variable for the WebGL context
 const TARGET_FPS = 60; //Target fps for the webgl program
@@ -19,6 +19,12 @@ let muodot: DrawableObject[];
  //Nice way to move, rotate, scale
  //Other shapes... interfaces. refactoring BOX, LINE, TRIANGLE : Inherit from DrawableObject, 
   //COMBINE THESE MESHES WITH SAME SHADER TO REDUCE DRAWCALLS!!!
+ //SHADER Modifying
+  //textures
+  //lightning
+ //TEXT
+ //CAMERA
+ //Advanced shaders, speculars etc....
 //Scenes?
 
 let timeSpent = 0; let a = 0;

@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
 
-    <script src="system.js"></script>
+    <script  src="require.js"></script>
     <script>
-        System.config({
-            defaultJSExtensions : true,
-            baseURL: './build',
+        requirejs.config({
+            baseUrl: 'build'
         });
 
-        // loads /build/WebGLTS.js
-        System.import('WebGLTS.js').then(function(webgl) {
-            webgl.start(); //Start webgl
-        });;
+        requirejs(['build/WebGLTS.js'], function(webgl) {
+            webgl.start();
+        });
     </script>
 
     <title>WebGL - Typescript</title>
