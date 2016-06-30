@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "amd",
+        "outDir": "./build",
+        "pretty": true,
+        "rootDir": "./src",
+        "listFiles": true
+    },
+    "exclude": [ 
+        "**.js"
+    ]
+}

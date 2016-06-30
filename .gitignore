@@ -3,3 +3,6 @@
 
 # Build results
 [Bb]uild/
+
+#NodeModules
+node_modules/

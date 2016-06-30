@@ -1,0 +1,24 @@
+{
+  "name": "webglts",
+  "version": "0.0.1",
+  "description": "webgl typescript project",
+  "main": "WebGLTS.ts",
+  "devDependencies": {
+    "mocha": "2.4.x",
+    "requirejs": "2.2.x"
+  },
+  "scripts": {
+    "pretest": "tsc -p tsconfigTest.json",
+    "test": "mocha test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kasperki/WebGLTS"
+  },
+  "keywords": [
+    "webgl",
+    "typescript"
+  ],
+  "author": "https://twitter.com/Kassu27",
+  "license": "MIT"
+}

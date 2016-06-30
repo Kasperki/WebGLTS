@@ -53,7 +53,7 @@ function render()
     
     muodot[i].axis = new Vector3(1,1,1);
     muodot[i].rot = a * 100;
-
+    
     muodot[i].RenderObject(pMatrix);
 
     muodot[i].position = org;
