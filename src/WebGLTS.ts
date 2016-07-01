@@ -7,6 +7,8 @@ import {Matrix4x4} from "Matrix4x4";
 import {Vector3} from "Vector3";
 import {initShaders} from "Shaders";
 import {DrawableObject} from "DrawableObject";
+import {Plane} from "Plane";
+import {Triangle} from "Triangle";
 
 var gl; // A global variable for the WebGL context
 const TARGET_FPS = 60; //Target fps for the webgl program
@@ -117,7 +119,7 @@ export function start()
       let squareLength = 100;
       for (let y = -5; y < 5; y++) {
         for (let x = 0; x < squareLength; x++) {
-          muodot.push(new DrawableObject(gl, shaderProgram, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
+          muodot.push(new Triangle(gl, shaderProgram, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
         }
       }
       

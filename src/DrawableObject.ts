@@ -1,6 +1,12 @@
 import {Color} from "./Color";
 import {Vector3} from "./Vector3";
 import {Matrix4x4} from "./Matrix4x4";
+import {Mesh} from "./Mesh";
+
+//Object 
+  //Mesh
+  //Shader
+ //RenderMesh
 
 export class DrawableObject 
 {
@@ -12,12 +18,14 @@ export class DrawableObject
     public color: Color;
     public shader;
 
-    private squareVertexPositionBuffer;
-    private gl;
+    public mesh: Mesh = new Mesh();
 
-    private pUniform;
-    private mvUniform;
-    private vColorLocation;
+    protected squareVertexPositionBuffer;
+    protected gl;
+
+    protected pUniform;
+    protected mvUniform;
+    protected vColorLocation;
 
     constructor(gl, shader, position: Vector3, color: Color) 
     {
@@ -34,22 +42,13 @@ export class DrawableObject
     }
 
     /**
-     * Init vertices
+     * Init buffers
      */
     public InitBuffers() : void
     {
-        //VERTICES
         this.squareVertexPositionBuffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.squareVertexPositionBuffer);
-        var vertices : number[] = [
-            1.0,  1.0,  0.0,
-            -1.0, 1.0,  0.0,
-            1.0,  -1.0, 0.0,
-            -1.0, -1.0, 0.0
-        ];
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW);
-        this.squareVertexPositionBuffer.itemSize = 3;
-        this.squareVertexPositionBuffer.numItems = 4;
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.mesh.Flatten()), this.gl.STATIC_DRAW);
     }
 
     /**
@@ -69,10 +68,10 @@ export class DrawableObject
 
         //DrawPosition
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.squareVertexPositionBuffer);
-        this.gl.vertexAttribPointer(this.shader.vertexPositionAttribute, this.squareVertexPositionBuffer.itemSize, this.gl.FLOAT, false, 0, 0);
+        this.gl.vertexAttribPointer(this.shader.vertexPositionAttribute, this.mesh.vertexPositionBufferSize, this.gl.FLOAT, false, 0, 0);
 
         this.setMatrixUniforms(pMatrix.matrix, mvMatrix.matrix);
-        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.squareVertexPositionBuffer.numItems);
+        this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.mesh.vertexPositionBufferItems);
     }
 
     private setMatrixUniforms(pMatrix, mMatrix) 
