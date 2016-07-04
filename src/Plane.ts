@@ -24,8 +24,6 @@ export class Plane extends DrawableObject
             new Vector3(-1,-1,0)
         ];
 
-        console.log("WATAFK");
-
         super.InitBuffers();
     }
 }

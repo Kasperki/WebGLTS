@@ -87,19 +87,21 @@ export class Matrix4x4
         b10 = x * y * t - z * s; b11 = y * y * t + c; b12 = z * y * t + x * s;
         b20 = x * z * t + y * s; b21 = y * z * t - x * s; b22 = z * z * t + c;
 
+        let mat = this.matrix.slice();
+
         // Perform rotation-specific matrix multiplication
-        this.matrix[0] = this.matrix[0] * b00 + this.matrix[4] * b01 + this.matrix[8] * b02;
-        this.matrix[1] = this.matrix[1] * b00 + this.matrix[5] * b01 + this.matrix[9] * b02;
-        this.matrix[2] = this.matrix[2] * b00 + this.matrix[6] * b01 + this.matrix[10] * b02;
-        this.matrix[3] = this.matrix[3] * b00 + this.matrix[7] * b01 + this.matrix[11] * b02;
-        this.matrix[4] = this.matrix[0] * b10 + this.matrix[4] * b11 + this.matrix[8] * b12;
-        this.matrix[5] = this.matrix[1] * b10 + this.matrix[5] * b11 + this.matrix[9] * b12;
-        this.matrix[6] = this.matrix[2] * b10 + this.matrix[6] * b11 + this.matrix[10] * b12;
-        this.matrix[7] = this.matrix[3] * b10 + this.matrix[7] * b11 + this.matrix[11] * b12;
-        this.matrix[8] = this.matrix[0] * b20 + this.matrix[4] * b21 + this.matrix[8] * b22;
-        this.matrix[9] = this.matrix[1] * b20 + this.matrix[5] * b21 + this.matrix[9] * b22;
-        this.matrix[10] = this.matrix[2] * b20 + this.matrix[6] * b21 + this.matrix[10] * b22;
-        this.matrix[11] = this.matrix[3] * b20 + this.matrix[7] * b21 + this.matrix[11] * b22;
+        this.matrix[0] = mat[0] * b00 + mat[4] * b01 + mat[8] * b02;
+        this.matrix[1] = mat[1] * b00 + mat[5] * b01 + mat[9] * b02;
+        this.matrix[2] = mat[2] * b00 + mat[6] * b01 + mat[10] * b02;
+        this.matrix[3] = mat[3] * b00 + mat[7] * b01 + mat[11] * b02;
+        this.matrix[4] = mat[0] * b10 + mat[4] * b11 + mat[8] * b12;
+        this.matrix[5] = mat[1] * b10 + mat[5] * b11 + mat[9] * b12;
+        this.matrix[6] = mat[2] * b10 + mat[6] * b11 + mat[10] * b12;
+        this.matrix[7] = mat[3] * b10 + mat[7] * b11 + mat[11] * b12;
+        this.matrix[8] = mat[0] * b20 + mat[4] * b21 + mat[8] * b22;
+        this.matrix[9] = mat[1] * b20 + mat[5] * b21 + mat[9] * b22;
+        this.matrix[10] = mat[2] * b20 + mat[6] * b21 + mat[10] * b22;
+        this.matrix[11] = mat[3] * b20 + mat[7] * b21 + mat[11] * b22;
 
         return this;
     }

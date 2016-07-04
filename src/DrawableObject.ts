@@ -19,6 +19,7 @@ export class DrawableObject
     public shader;
 
     public mesh: Mesh = new Mesh();
+    private lastVertices: Vector3[];
 
     protected squareVertexPositionBuffer;
     protected gl;
@@ -37,8 +38,6 @@ export class DrawableObject
         this.pUniform = this.gl.getUniformLocation(this.shader.shaderProgram, "uPMatrix");
         this.mvUniform = this.gl.getUniformLocation(this.shader.shaderProgram, "uMVMatrix");
         this.vColorLocation = this.gl.getUniformLocation(this.shader.shaderProgram, "vColor");
-
-        this.InitBuffers();
     }
 
     /**
@@ -48,7 +47,17 @@ export class DrawableObject
     {
         this.squareVertexPositionBuffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.squareVertexPositionBuffer);
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.mesh.Flatten()), this.gl.STATIC_DRAW);
+        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.mesh.Flatten()), this.gl.DYNAMIC_DRAW);
+    }
+
+    private modifyVertices() 
+    {
+        if (this.mesh.vertices !== this.lastVertices) 
+        {
+            this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.squareVertexPositionBuffer);
+            this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 0, new Float32Array(this.mesh.Flatten()));
+            this.lastVertices = this.mesh.vertices.slice();
+        }
     }
 
     /**
@@ -56,13 +65,15 @@ export class DrawableObject
      */
     public RenderObject(pMatrix) : void
     {  
+        this.modifyVertices();
+        
         //Translate Position
         let mvMatrix = Matrix4x4.Identity();
         mvMatrix.Translate(this.position);
 
         //Rotate
         mvMatrix.Rotate(this.rot, this.axis); //TODO Add someway to change.
-
+        
         //Scale
         mvMatrix.Scale(this.scale);
 

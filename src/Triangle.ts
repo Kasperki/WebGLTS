@@ -23,8 +23,6 @@ export class Triangle extends DrawableObject
             new Vector3(1,-1,0)
         ];
 
-        console.log("Called");
-
         super.InitBuffers();
     }
 }

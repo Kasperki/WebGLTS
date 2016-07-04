@@ -9,6 +9,7 @@ import {initShaders} from "Shaders";
 import {DrawableObject} from "DrawableObject";
 import {Plane} from "Plane";
 import {Triangle} from "Triangle";
+import {Pyramid3D} from "Pyramid3D";
 
 var gl; // A global variable for the WebGL context
 const TARGET_FPS = 60; //Target fps for the webgl program
@@ -41,7 +42,7 @@ function render()
 
   //SetPerspective
   let pMatrix = Matrix4x4.Identity();
-  pMatrix.matrix = Utils.makePerspective(60, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
+  pMatrix.matrix = Utils.makePerspective(120, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
 
   a += 0.01;
   //IterateAndDrawAllObjects
@@ -49,12 +50,15 @@ function render()
     let org = muodot[i].position;
     
     muodot[i].color = new Color(i / muodot.length, Math.sin(a), Math.tan(a), 1);
-    
+    muodot[i].mesh.vertices[0] = new Vector3(0,Math.cos(a) * 10,0);
+    muodot[i].mesh.vertices[3] = new Vector3(0,Math.cos(a) * 10,0);
+    muodot[i].mesh.vertices[6] = new Vector3(0,Math.cos(a) * 10,0);
+
     let pos = new Vector3(muodot[i].position.x * Math.tan(a), muodot[i].position.y, -20 + muodot[i].position.z * Math.sin(a));
-    muodot[i].position = pos;
+    //muodot[i].position = pos;
     
-    muodot[i].axis = new Vector3(1,1,1);
-    muodot[i].rot = a * 100;
+    muodot[i].axis = new Vector3(1,1,0);
+    //muodot[i].rot = a * 100;
     
     muodot[i].RenderObject(pMatrix);
 
@@ -119,7 +123,7 @@ export function start()
       let squareLength = 100;
       for (let y = -5; y < 5; y++) {
         for (let x = 0; x < squareLength; x++) {
-          muodot.push(new Triangle(gl, shaderProgram, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
+          muodot.push(new Pyramid3D(gl, shaderProgram, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
         }
       }
       
