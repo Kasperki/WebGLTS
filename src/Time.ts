@@ -1,13 +1,13 @@
 /**
  * Time helper class
  */
-export class Time 
+export class Time
 {
     private startTime;
     private lastFrame;
     private nextFrame;
 
-    constructor() 
+    constructor()
     {
         this.startTime = new Date().getTime();
     }
@@ -16,7 +16,7 @@ export class Time
      * Get time how long has the program run in milliseconds
      * @return {Number}
      */
-    public getTime() : number 
+    public getTime(): number
     {
         return Date.now() - this.startTime;
     }
@@ -25,7 +25,7 @@ export class Time
     * Get deltatime of the program. Deltatime is time spent between rendering frames. 
     * @return {Number}  
     */
-    public getDeltaTime() : number 
+    public getDeltaTime(): number
     {
         return new Date().getTime() - this.lastFrame;
     }
@@ -33,7 +33,7 @@ export class Time
     /**
      * Keeps track of last drawframe time. || Should be hidden from user.
      */
-    public countDeltaTime() : void 
+    public countDeltaTime(): void
     {
         this.lastFrame = this.nextFrame;
         this.nextFrame = new Date().getTime();

@@ -6,12 +6,12 @@ const glMatrixEPSILON = 0.000001;
  * Matrix
  * Powered by; https://github.com/toji/gl-matrix
  */
-export class Matrix4x4 
+export class Matrix4x4
 {
-    
+
     public matrix: number[];
 
-    constructor() 
+    constructor()
     {
     }
 
@@ -19,10 +19,10 @@ export class Matrix4x4
      * Creates identity matrix
      * @return Matrix4x4
      */
-    public static Identity() : Matrix4x4 
-    {    
+    public static Identity(): Matrix4x4
+    {
         let matrix = new Matrix4x4();
-        matrix.matrix = 
+        matrix.matrix =
         [
             1.0, 0.0, 0.0, 0.0,
             0.0, 1.0, 0.0, 0.0,
@@ -37,7 +37,7 @@ export class Matrix4x4
      * Translate matrix
      * @param {Vector3} vector
      */
-    public Translate(vector: Vector3) 
+    public Translate(vector: Vector3)
     {
         let x = vector.x, y = vector.y, z = vector.z;
         this.matrix[12] = this.matrix[0] * x + this.matrix[4] * y + this.matrix[8] * z + this.matrix[12];
@@ -63,7 +63,7 @@ export class Matrix4x4
      * @param {Vector3} axis
      * @return Matrix4x4
      */
-    public Rotate(degrees, axis: Vector3) : Matrix4x4
+    public Rotate(degrees, axis: Vector3): Matrix4x4
     {
         let x = axis.x, y = axis.y, z = axis.z;
         let len = Math.sqrt(x * x + y * y + z * z);
@@ -110,8 +110,8 @@ export class Matrix4x4
      * Return matrix in string
      * @return {String}
      */
-    public toString() : string 
+    public toString(): string
     {
-        return this.matrix.toString(); 
+        return this.matrix.toString();
     }
 }

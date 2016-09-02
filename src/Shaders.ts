@@ -1,10 +1,10 @@
 /**
  * InitShaders
  */
-export function initShaders(gl: WebGLRenderingContext) 
+export function initShaders(gl: WebGLRenderingContext)
 {
-  var fragmentShader = getShader(gl, "shader-fs");
-  var vertexShader = getShader(gl, "shader-vs");
+  let fragmentShader = getShader(gl, "shader-fs");
+  let vertexShader = getShader(gl, "shader-vs");
 
   // Create the shader program
   let shaderProgram = gl.createProgram();
@@ -13,7 +13,8 @@ export function initShaders(gl: WebGLRenderingContext)
   gl.linkProgram(shaderProgram);
 
   // If creating the shader program failed, alert
-  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS))
+  {
     alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(shaderProgram));
   }
 
@@ -24,7 +25,7 @@ export function initShaders(gl: WebGLRenderingContext)
 
   let vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
 
-  return {shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute};
+  return { shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute };
 }
 
 //
@@ -33,24 +34,27 @@ export function initShaders(gl: WebGLRenderingContext)
 // Loads a shader program by scouring the current document,
 // looking for a script with the specified ID.
 //
-function getShader(gl, id) 
+function getShader(gl, id)
 {
-  var shaderScript = <HTMLScriptElement>document.getElementById(id);
+  let shaderScript = <HTMLScriptElement>document.getElementById(id);
 
   // Didn't find an element with the specified ID; abort.
 
-  if (!shaderScript) {
+  if (!shaderScript)
+  {
     return null;
   }
 
   // Walk through the source element's children, building the
   // shader source string.
 
-  var theSource = "";
-  var currentChild = shaderScript.firstChild;
+  let theSource = "";
+  let currentChild = shaderScript.firstChild;
 
-  while(currentChild) {
-    if (currentChild.nodeType == 3) {
+  while (currentChild)
+  {
+    if (currentChild.nodeType === 3)
+    {
       theSource += currentChild.textContent;
     }
 
@@ -60,13 +64,18 @@ function getShader(gl, id)
   // Now figure out what type of shader script we have,
   // based on its MIME type.
 
-  var shader;
+  let shader;
 
-  if (shaderScript.type == "x-shader/x-fragment") {
+  if (shaderScript.type === "x-shader/x-fragment")
+  {
     shader = gl.createShader(gl.FRAGMENT_SHADER);
-  } else if (shaderScript.type == "x-shader/x-vertex") {
+  }
+  else if (shaderScript.type === "x-shader/x-vertex")
+  {
     shader = gl.createShader(gl.VERTEX_SHADER);
-  } else {
+  }
+  else
+  {
     return null;  // Unknown shader type
   }
 
@@ -80,7 +89,8 @@ function getShader(gl, id)
 
   // See if it compiled successfully
 
-  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+  {
     alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
     return null;
   }

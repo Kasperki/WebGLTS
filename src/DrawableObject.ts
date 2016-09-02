@@ -8,7 +8,7 @@ import {Mesh} from "./Mesh";
   //Shader
  //RenderMesh
 
-export class DrawableObject 
+export class DrawableObject
 {
     public position: Vector3; //Position in world
     public scale: Vector3 = Vector3.One; //Object scale
@@ -28,7 +28,7 @@ export class DrawableObject
     protected mvUniform;
     protected vColorLocation;
 
-    constructor(gl, shader, position: Vector3, color: Color) 
+    constructor(gl, shader, position: Vector3, color: Color)
     {
         this.gl = gl;
         this.shader = shader;
@@ -43,16 +43,16 @@ export class DrawableObject
     /**
      * Init buffers
      */
-    public InitBuffers() : void
+    public InitBuffers(): void
     {
         this.squareVertexPositionBuffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.squareVertexPositionBuffer);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.mesh.Flatten()), this.gl.DYNAMIC_DRAW);
     }
 
-    private modifyVertices() 
+    private modifyVertices()
     {
-        if (this.mesh.vertices !== this.lastVertices) 
+        if (this.mesh.vertices !== this.lastVertices)
         {
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.squareVertexPositionBuffer);
             this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 0, new Float32Array(this.mesh.Flatten()));
@@ -63,17 +63,17 @@ export class DrawableObject
     /**
      * Renders object
      */
-    public RenderObject(pMatrix) : void
-    {  
+    public RenderObject(pMatrix): void
+    {
         this.modifyVertices();
-        
+
         //Translate Position
         let mvMatrix = Matrix4x4.Identity();
         mvMatrix.Translate(this.position);
 
         //Rotate
         mvMatrix.Rotate(this.rot, this.axis); //TODO Add someway to change.
-        
+
         //Scale
         mvMatrix.Scale(this.scale);
 
@@ -85,7 +85,7 @@ export class DrawableObject
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, this.mesh.vertexPositionBufferItems);
     }
 
-    private setMatrixUniforms(pMatrix, mMatrix) 
+    private setMatrixUniforms(pMatrix, mMatrix)
     {
         this.gl.uniformMatrix4fv(this.pUniform, false, new Float32Array(pMatrix));
         this.gl.uniformMatrix4fv(this.mvUniform, false, new Float32Array(mMatrix));

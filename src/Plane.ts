@@ -5,23 +5,23 @@ import {DrawableObject} from "./DrawableObject";
 
 export class Plane extends DrawableObject
 {
-    
-    constructor(gl, shader, position: Vector3, color: Color) 
+
+    constructor(gl, shader, position: Vector3, color: Color)
     {
-        super(gl,shader,position,color);
+        super(gl, shader, position, color);
         this.InitBuffers();
     }
-    
+
     /**
      * Init vertices
      */
-    public InitBuffers() : void
+    public InitBuffers(): void
     {
         this.mesh.vertices = [
-            new Vector3(1,1,0),
-            new Vector3(-1,1,0),
-            new Vector3(1,-1,0),
-            new Vector3(-1,-1,0)
+            new Vector3(1, 1, 0),
+            new Vector3(-1, 1, 0),
+            new Vector3(1, -1, 0),
+            new Vector3(-1, -1, 0)
         ];
 
         super.InitBuffers();

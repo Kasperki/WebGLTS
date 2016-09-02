@@ -9,18 +9,18 @@ import {MouseCode} from "MouseCode";
 
 let canvasRect;
 
-export class Input 
+export class Input
 {
     private static keys: boolean[];
     private static keysdown: boolean[];
     private static keysdownStart: boolean[];
     private static keysup: boolean[];
-    
+
     private static mousebutton: boolean[];
     public static mousePosition: Vector3;
     public static mouseWheelDelta: Vector3;
 
-    constructor () 
+    constructor ()
     {
         Input.keys = new Array();
         Input.keysdown = new Array();
@@ -39,11 +39,11 @@ export class Input
 
         Input.mouseWheelDelta = Vector3.Zero;
         Input.mousePosition = Vector3.Zero;
-        canvasRect = document.getElementById('glcanvas').getBoundingClientRect();
+        canvasRect = document.getElementById("glcanvas").getBoundingClientRect();
     }
 
     //NOTE: Does not work if dom changes after load. then must calculate boundingClientRect again
-    private handleMouseMove(event: MouseEvent) 
+    private handleMouseMove(event: MouseEvent)
     {
         Input.mousePosition.x = event.clientX - canvasRect.left;
         Input.mousePosition.y = event.clientY - canvasRect.top;
@@ -60,7 +60,7 @@ export class Input
         Input.mousebutton[event.button] = false;
     }
 
-    private handleMouseWheel(event: WheelEvent) 
+    private handleMouseWheel(event: WheelEvent)
     {
         Input.mouseWheelDelta.x = event.deltaX;
         Input.mouseWheelDelta.y = event.deltaY;
@@ -68,10 +68,10 @@ export class Input
         //console.log(Input.mouseWheelDelta.toString()); //DEBUG
     }
 
-    private handleKeyDown(event: KeyboardEvent) 
+    private handleKeyDown(event: KeyboardEvent)
     {
-        let key = event.key.toLowerCase();   
-        
+        let key = event.key.toLowerCase();
+
         Input.keys[key] = true;
 
         if (!Input.keysdownStart[key]) {
@@ -80,10 +80,10 @@ export class Input
         }
     }
 
-    private handleKeyUp(event: KeyboardEvent) 
+    private handleKeyUp(event: KeyboardEvent)
     {
-        let key = event.key.toLowerCase(); 
-        
+        let key = event.key.toLowerCase();
+
         Input.keys[key] = false;
         Input.keysdownStart[key] = false;
         Input.keysup[key] = true;
@@ -93,7 +93,7 @@ export class Input
      * Updates input
      * CALLED ONLY ONCE IN MAINLOOP!!  || Should be hidden from user.
      */
-    public Update(): void 
+    public Update(): void
     {
         Input.keysdown = [];
         Input.keysup = [];
@@ -117,11 +117,11 @@ export class Input
      * @param {String} keyCode
      * @return {boolean}
      */
-    public static GetKey(keyCode: string) 
+    public static GetKey(keyCode: string)
     {
         if (this.keys[keyCode.toLowerCase()])
             return true;
-        else 
+        else
             return false;
     }
 
@@ -134,7 +134,7 @@ export class Input
     {
         if (this.keysdown[keyCode.toLowerCase()])
             return true;
-        else 
+        else
             return false;
     }
 
@@ -143,11 +143,11 @@ export class Input
      * @param {String} keyCode
      * @return {boolean}
      */
-    public static GetKeyUp(keyCode: string)  
+    public static GetKeyUp(keyCode: string)
     {
         if (this.keysup[keyCode.toLowerCase()])
             return true;
-        else 
+        else
             return false;
     }
 }

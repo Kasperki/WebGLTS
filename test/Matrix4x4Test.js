@@ -10,8 +10,8 @@ describe("Matrix4x4", function() {
         it("should return identity matrix", function() {
             let m4x4 = new Matrix4x4.Identity();
 
-            for(let i = 0; i < 16; i++) {
-                if(i % 5 === 0)
+            for (let i = 0; i < 16; i++) {
+                if (i % 5 === 0)
                     assert.equal(m4x4.matrix[i], 1);
                 else 
                     assert.equal(m4x4.matrix[i], 0);
@@ -30,7 +30,7 @@ describe("Matrix4x4", function() {
             assert.equal(m4x4.matrix[5], 3);
             assert.equal(m4x4.matrix[10], 4);
 
-            for(let i = 0; i < 16; i++) {
+            for (let i = 0; i < 16; i++) {
                 if(i % 5 !== 0)
                     assert.equal(m4x4.matrix[i], 0);
             }

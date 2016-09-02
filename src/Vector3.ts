@@ -3,21 +3,21 @@
  */
 export class Vector3
 {
-    public x:number;
-    public y:number;
-    public z:number;
+    public x: number;
+    public y: number;
+    public z: number;
 
-    static get One(): Vector3 
-    { 
-        return new Vector3(1,1,1)
-    };
-    
-    static get Zero(): Vector3 
-    { 
-        return new Vector3(0,0,0)
+    static get One(): Vector3
+    {
+        return new Vector3(1, 1, 1);
     };
 
-    constructor(x: number, y: number, z: number) 
+    static get Zero(): Vector3
+    {
+        return new Vector3(0, 0, 0);
+    };
+
+    constructor(x: number, y: number, z: number)
     {
         this.x = x;
         this.y = y;
@@ -39,7 +39,7 @@ export class Vector3
     * Returns vector in string
     * @return {string}
     */
-    public toString = () : string => 
+    public toString = () : string =>
     {
         return "X:" + this.x + " Y:" + this.y + " Z:" + this.z;
     }
