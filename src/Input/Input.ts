@@ -104,7 +104,7 @@ export class Input
     * @param {MouseCode} mousecode 
     * @return {boolean}
     */
-    public static GetMouseButton(mouseCode: MouseCode)
+    public static GetMouseButton(mouseCode: MouseCode): boolean
     {
         if (this.mousebutton[mouseCode])
             return true;
@@ -117,7 +117,7 @@ export class Input
      * @param {String} keyCode
      * @return {boolean}
      */
-    public static GetKey(keyCode: string)
+    public static GetKey(keyCode: string): boolean
     {
         if (this.keys[keyCode.toLowerCase()])
             return true;
@@ -130,7 +130,7 @@ export class Input
      * @param {String} keyCode
      * @return {boolean}
      */
-    public static GetKeyDown(keyCode: string)
+    public static GetKeyDown(keyCode: string): boolean
     {
         if (this.keysdown[keyCode.toLowerCase()])
             return true;
@@ -143,7 +143,7 @@ export class Input
      * @param {String} keyCode
      * @return {boolean}
      */
-    public static GetKeyUp(keyCode: string)
+    public static GetKeyUp(keyCode: string): boolean
     {
         if (this.keysup[keyCode.toLowerCase()])
             return true;

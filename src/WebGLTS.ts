@@ -1,4 +1,5 @@
 import * as Utils from "Utils";
+import {Camera} from "Camera";
 import {Color} from "Color";
 import {Time} from "Time";
 import {Input} from "Input/Input";
@@ -10,13 +11,14 @@ import {DrawableObject} from "DrawableObject";
 import {Plane} from "Plane";
 import {Triangle} from "Triangle";
 import {Pyramid3D} from "Pyramid3D";
+import {Scene} from "Scene";
 
 let gl; // A global variable for the WebGL context
 const TARGET_FPS = 60; //Target fps for the webgl program
 let time: Time;
 let input: Input;
 
-let muodot: DrawableObject[];
+let scene: Scene;
 
 //TODO
  //Nice way to move, rotate, scale
@@ -26,68 +28,33 @@ let muodot: DrawableObject[];
   //textures
   //lightning
  //TEXT
- //CAMERA
  //Advanced shaders, speculars etc....
-//Scenes?
 
-let timeSpent = 0; let a = 0;
-function render()
+function GameLoop()
 {
+  //Call Scene Update
+  scene.Update();
 
-  //Pulsing background
-  timeSpent += 1.0 / 60.0;
-  let factor = (Math.sin(timeSpent) + 1) * 0.5;
-  gl.clearColor(factor * 0.7 + 0.3, factor * 0.7 + 0.3, factor * 0.7 + 0.3, 1.0);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  //Call Scene LateUpdate
+  scene.LateUpdate();
 
-  //SetPerspective
-  let pMatrix = Matrix4x4.Identity();
-  pMatrix.matrix = Utils.makePerspective(120, gl.viewportWidth / gl.viewportHeight, 0.1, 100.0);
-
-  a += 0.01;
-  //IterateAndDrawAllObjects
-  for (let i = 0; i < muodot.length; i++)
-  {
-    let org = muodot[i].position;
-
-    muodot[i].color = new Color(i / muodot.length, Math.sin(a), Math.tan(a), 1);
-    muodot[i].mesh.vertices[0] = new Vector3(0, Math.cos(a) * 10, 0);
-    muodot[i].mesh.vertices[3] = new Vector3(0, Math.cos(a) * 10, 0);
-    muodot[i].mesh.vertices[6] = new Vector3(0, Math.cos(a) * 10, 0);
-
-    let pos = new Vector3(muodot[i].position.x * Math.tan(a), muodot[i].position.y, -20 + muodot[i].position.z * Math.sin(a));
-    //muodot[i].position = pos;
-
-    muodot[i].axis = new Vector3(1, 1, 0);
-    //muodot[i].rot = a * 100;
-
-    muodot[i].RenderObject(pMatrix);
-
-    muodot[i].position = org;
-  }
-}
-
-function renderLoop()
-{
-  //RenderScene
-  render();
-
-  //Call Scene Update?
+  //Render Scene
+  scene.Render();
 
   //EngineStuff
   input.Update();
   time.countDeltaTime();
 
-  document.getElementById("glfps").innerHTML = "FPS:" + countFPS() + " Dtime:" + time.getDeltaTime().toString() + " time:" + time.getTime();
+  document.getElementById("glfps").innerHTML = "FPS:" + countFPS() + " Dtime:" + time.getDeltaTime() + " time:" + time.getTime();
 }
 
 let fps: number = 0, currentFPS: number = 0, frameTime: number = 0;
 
 /**
  * Counts fps on the program
- * @returns string
+ * @returns number
  */
-function countFPS(): string
+function countFPS(): number
 {
   fps++;
   if (new Date().getTime() >= frameTime) {
@@ -95,7 +62,7 @@ function countFPS(): string
     frameTime = new Date().getTime() + 1000;
   }
 
-  return currentFPS.toString();
+  return currentFPS;
 }
 
 export function start()
@@ -115,22 +82,15 @@ export function start()
       //Init shaders
       let shaderProgram = initShaders(gl);
 
-      //Init Custom Classes
+      //Init Engine Classes
       time = new Time();
       input = new Input();
 
-      //Init game
-      muodot = new Array();
+      //Init Starting Scene
+      scene = new Scene(); //TODO LOAD DONT CREATE NEW
+      scene.Init(gl, shaderProgram);
 
-      //Init Scene
-      let squareLength = 100;
-      for (let y = -5; y < 5; y++) {
-        for (let x = 0; x < squareLength; x++) {
-          muodot.push(new Pyramid3D(gl, shaderProgram, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
-        }
-      }
-
-      setInterval(renderLoop, 1000 / TARGET_FPS);
+      setInterval(GameLoop, 1000 / TARGET_FPS);
     }
 }
 
