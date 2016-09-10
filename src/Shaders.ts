@@ -1,99 +1,87 @@
-/**
- * InitShaders
- */
-export function initShaders(gl: WebGLRenderingContext)
+export class Shader
 {
-  let fragmentShader = getShader(gl, "shader-fs");
-  let vertexShader = getShader(gl, "shader-vs");
+  public static AllShaders = []; //TODO ADD ALL CRATED SHADERS TO GLOBAL LIST, WHERE DRAWABLE OBJECTS OR WHO OVER CAN ACCESS THEM?
+  private SHADER_TYPE_FRAGMENT = "x-shader/x-fragment";
+  private SHADER_TYPE_VERTEX = "x-shader/x-vertex";
 
-  // Create the shader program
-  let shaderProgram = gl.createProgram();
-  gl.attachShader(shaderProgram, vertexShader);
-  gl.attachShader(shaderProgram, fragmentShader);
-  gl.linkProgram(shaderProgram);
-
-  // If creating the shader program failed, alert
-  if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS))
+  public AddShaderProgram (gl: WebGLRenderingContext, vertex: string, fragment: string): void
   {
-    alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(shaderProgram));
-  }
+      let vertexShader = this.GetShader(gl, vertex, this.SHADER_TYPE_VERTEX);
+      let fragmentShader = this.GetShader(gl, fragment, this.SHADER_TYPE_FRAGMENT);
 
-  gl.useProgram(shaderProgram);
+      let shaderProgram = gl.createProgram();
+      gl.attachShader(shaderProgram, vertexShader);
+      gl.attachShader(shaderProgram, fragmentShader);
+      gl.linkProgram(shaderProgram);
 
-  let vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-  gl.enableVertexAttribArray(vertexPositionAttribute);
+      // If creating the shader program failed, alert
+      if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS))
+      {
+        alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(shaderProgram));
+      }
 
-  let vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+      gl.useProgram(shaderProgram);
 
-  return { shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute };
-}
+      let vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+      gl.enableVertexAttribArray(vertexPositionAttribute);
 
-//
-// getShader
-//
-// Loads a shader program by scouring the current document,
-// looking for a script with the specified ID.
-//
-function getShader(gl, id)
-{
-  let shaderScript = <HTMLScriptElement>document.getElementById(id);
+      let vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
 
-  // Didn't find an element with the specified ID; abort.
+      Shader.AllShaders.push({ shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute });
+  };
 
-  if (!shaderScript)
+  private GetShader (gl, file, type)
   {
-    return null;
-  }
+      let shaderSource;
 
-  // Walk through the source element's children, building the
-  // shader source string.
+      this.GetRequest(file, function(response) {
+          shaderSource = response;
+      });
 
-  let theSource = "";
-  let currentChild = shaderScript.firstChild;
+      let shader;
+      if (type === this.SHADER_TYPE_FRAGMENT)
+      {
+          shader = gl.createShader(gl.FRAGMENT_SHADER);
+      }
+      else if (type === this.SHADER_TYPE_VERTEX)
+      {
+          shader = gl.createShader(gl.VERTEX_SHADER);
+      }
+      else
+      {
+          return null;
+      }
 
-  while (currentChild)
+      // Send the source to the shader object
+      gl.shaderSource(shader, shaderSource);
+
+      // Compile the shader program
+      gl.compileShader(shader);
+
+      //if things didn't go so well alert
+      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+      {
+          alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
+          return null;
+      }
+
+      //return the shader reference
+      return shader;
+  };
+
+  private GetRequest(file, callback: (response: string) => void)
   {
-    if (currentChild.nodeType === 3)
-    {
-      theSource += currentChild.textContent;
-    }
+    let request = new XMLHttpRequest();
 
-    currentChild = currentChild.nextSibling;
-  }
+    request.open("GET", "src/shaders/" + file, false);
+    request.setRequestHeader("Content-Type", "text/plain");
 
-  // Now figure out what type of shader script we have,
-  // based on its MIME type.
+    request.onreadystatechange = function () {
+        if (this.readyState === 4) {
+            callback(request.responseText);
+        }
+    };
 
-  let shader;
-
-  if (shaderScript.type === "x-shader/x-fragment")
-  {
-    shader = gl.createShader(gl.FRAGMENT_SHADER);
-  }
-  else if (shaderScript.type === "x-shader/x-vertex")
-  {
-    shader = gl.createShader(gl.VERTEX_SHADER);
-  }
-  else
-  {
-    return null;  // Unknown shader type
-  }
-
-  // Send the source to the shader object
-
-  gl.shaderSource(shader, theSource);
-
-  // Compile the shader program
-
-  gl.compileShader(shader);
-
-  // See if it compiled successfully
-
-  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
-  {
-    alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
-    return null;
-  }
-
-  return shader;
+    request.send(null);  // No data needs to be sent along with the request.
+  };
 }

@@ -4,6 +4,7 @@ Typescript WebGLTest
 
 ## Prequistes
 -TODO
+-APACHE TO SHARE shaders
 
 ## How to compile
 npm install

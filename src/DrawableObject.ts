@@ -35,6 +35,8 @@ export class DrawableObject
         this.position = position;
         this.color = color;
 
+        this.gl.useProgram(this.shader.shaderProgram);
+
         this.pUniform = this.gl.getUniformLocation(this.shader.shaderProgram, "uPMatrix");
         this.mvUniform = this.gl.getUniformLocation(this.shader.shaderProgram, "uMVMatrix");
         this.vColorLocation = this.gl.getUniformLocation(this.shader.shaderProgram, "vColor");
@@ -48,6 +50,8 @@ export class DrawableObject
         this.squareVertexPositionBuffer = this.gl.createBuffer();
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.squareVertexPositionBuffer);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.mesh.Flatten()), this.gl.DYNAMIC_DRAW);
+
+        //this.gl.setNormals();
     }
 
     private modifyVertices()
@@ -87,6 +91,7 @@ export class DrawableObject
 
     private setMatrixUniforms(pMatrix, mMatrix)
     {
+        this.gl.useProgram(this.shader.shaderProgram);
         this.gl.uniformMatrix4fv(this.pUniform, false, new Float32Array(pMatrix));
         this.gl.uniformMatrix4fv(this.mvUniform, false, new Float32Array(mMatrix));
         this.gl.uniform4f(this.vColorLocation, this.color.r, this.color.g, this.color.b, this.color.a);

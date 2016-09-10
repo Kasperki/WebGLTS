@@ -23,29 +23,5 @@
         Your browser doesn't appear to support the 
         <code>&lt;canvas&gt;</code> element.
     </canvas>
-
-    <!-- Fragment Shaders -->
-    <script id="shader-fs" type="x-shader/x-fragment">
-        precision mediump float;
-
-        uniform vec4 vColor;
-
-        void main(void) {
-            gl_FragColor = vColor;
-        }
-    </script>
-
-    <!-- Vertex Shaders -->
-    <script id="shader-vs" type="x-shader/x-vertex">
-        attribute vec3 aVertexPosition;
-        attribute vec4 aVertexColor;
-
-        uniform mat4 uMVMatrix;
-        uniform mat4 uPMatrix;
-
-        void main(void) {
-            gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-        }
-    </script>
-  </body>
+</body>
 </html>

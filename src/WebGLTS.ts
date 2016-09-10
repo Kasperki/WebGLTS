@@ -6,12 +6,14 @@ import {Input} from "Input/Input";
 import {MouseCode} from "Input/MouseCode";
 import {Matrix4x4} from "Matrix4x4";
 import {Vector3} from "Vector3";
-import {initShaders} from "Shaders";
+
 import {DrawableObject} from "DrawableObject";
 import {Plane} from "Plane";
 import {Triangle} from "Triangle";
 import {Pyramid3D} from "Pyramid3D";
 import {Scene} from "Scene";
+
+import {Shader} from "Shaders";
 
 let gl; // A global variable for the WebGL context
 const TARGET_FPS = 60; //Target fps for the webgl program
@@ -27,8 +29,14 @@ let scene: Scene;
  //SHADER Modifying
   //textures
   //lightning
+   //Ambient
+   //Directional
+    //CALCULATE VERTEX NORMALS
  //TEXT
  //Advanced shaders, speculars etc....
+//Separate engine - program code?
+//Node FileServing.
+//More unit tests!
 
 function GameLoop()
 {
@@ -73,14 +81,17 @@ export function start()
     gl = initWebGL(canvas);
 
     // Only continue if WebGL is available and working
-    if (gl) {
+    if (gl)
+    {
       gl.clearColor(0.0, 0.0, 0.0, 1.0);  // Clear to black, fully opaque
       gl.clearDepth(1.0);                 // Clear everything
       gl.enable(gl.DEPTH_TEST);           // Enable depth testing
       gl.depthFunc(gl.LEQUAL);            // Near things obscure far things
 
       //Init shaders
-      let shaderProgram = initShaders(gl);
+      let shaderManager = new Shader();
+      shaderManager.AddShaderProgram(gl, "vertex.shader", "fragment.shader");
+      shaderManager.AddShaderProgram(gl, "vertex.shader", "fragment2.shader");
 
       //Init Engine Classes
       time = new Time();
@@ -88,7 +99,7 @@ export function start()
 
       //Init Starting Scene
       scene = new Scene(); //TODO LOAD DONT CREATE NEW
-      scene.Init(gl, shaderProgram);
+      scene.Init(gl);
 
       setInterval(GameLoop, 1000 / TARGET_FPS);
     }

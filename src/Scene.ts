@@ -5,6 +5,7 @@ import {Vector3} from "Vector3";
 import {Pyramid3D} from "Pyramid3D";
 import {Color} from "Color";
 import {Input} from "Input/Input";
+import {Shader} from "Shaders";
 
 //TODO MAKE ABSTRACT
 export class Scene
@@ -14,13 +15,10 @@ export class Scene
     public mainCamera: Camera;
 
     private gl;
-    private shaderProgram;
 
-    public Init(gl, shaderProgram): void
+    public Init(gl: WebGLRenderingContext): void
     {
         this.gl = gl;
-        this.shaderProgram = shaderProgram;
-
         this.mainCamera = new Camera();
 
         this.gameObjects = [];
@@ -30,7 +28,7 @@ export class Scene
         {
             for (let x = 0; x < squareLength; x++)
             {
-                this.gameObjects.push(new Pyramid3D(gl, shaderProgram, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
+                this.gameObjects.push(new Pyramid3D(gl, Shader.AllShaders[(x % 2 === 0 ? 0 : 1 )], new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
             }
         }
     }
