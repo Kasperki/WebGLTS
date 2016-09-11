@@ -3,20 +3,20 @@
  */
 export class Time
 {
-    private startTime;
-    private lastFrame;
-    private nextFrame;
+    private static startTime;
+    private static lastFrame;
+    private static nextFrame;
 
     constructor()
     {
-        this.startTime = new Date().getTime();
+        Time.startTime = new Date().getTime();
     }
 
     /**
      * Get time how long has the program run in milliseconds
      * @return {Number}
      */
-    public getTime(): number
+    public static getTime(): number
     {
         return Date.now() - this.startTime;
     }
@@ -25,7 +25,7 @@ export class Time
     * Get deltatime of the program. Deltatime is time spent between rendering frames. 
     * @return {Number}  
     */
-    public getDeltaTime(): number
+    public static getDeltaTime(): number
     {
         return new Date().getTime() - this.lastFrame;
     }
@@ -35,7 +35,7 @@ export class Time
      */
     public countDeltaTime(): void
     {
-        this.lastFrame = this.nextFrame;
-        this.nextFrame = new Date().getTime();
+        Time.lastFrame = Time.nextFrame;
+        Time.nextFrame = new Date().getTime();
     }
 }

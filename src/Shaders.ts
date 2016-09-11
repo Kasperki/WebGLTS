@@ -1,36 +1,41 @@
 export class Shader
 {
-  public static AllShaders = []; //TODO ADD ALL CRATED SHADERS TO GLOBAL LIST, WHERE DRAWABLE OBJECTS OR WHO OVER CAN ACCESS THEM?
+  public static AllShaders = [];
   private SHADER_TYPE_FRAGMENT = "x-shader/x-fragment";
   private SHADER_TYPE_VERTEX = "x-shader/x-vertex";
 
-  public AddShaderProgram (gl: WebGLRenderingContext, vertex: string, fragment: string): void
-  {
-      let vertexShader = this.GetShader(gl, vertex, this.SHADER_TYPE_VERTEX);
-      let fragmentShader = this.GetShader(gl, fragment, this.SHADER_TYPE_FRAGMENT);
+  private gl: WebGLRenderingContext;
 
-      let shaderProgram = gl.createProgram();
-      gl.attachShader(shaderProgram, vertexShader);
-      gl.attachShader(shaderProgram, fragmentShader);
-      gl.linkProgram(shaderProgram);
+  constructor (gl: WebGLRenderingContext)
+  {
+      this.gl = gl;
+  }
+
+  public AddShaderProgram (name: string, vertex: string, fragment: string): void
+  {
+      let vertexShader = this.GetShader(vertex, this.SHADER_TYPE_VERTEX);
+      let fragmentShader = this.GetShader(fragment, this.SHADER_TYPE_FRAGMENT);
+
+      let shaderProgram = this.gl.createProgram();
+      this.gl.attachShader(shaderProgram, vertexShader);
+      this.gl.attachShader(shaderProgram, fragmentShader);
+      this.gl.linkProgram(shaderProgram);
 
       // If creating the shader program failed, alert
-      if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS))
+      if (!this.gl.getProgramParameter(shaderProgram, this.gl.LINK_STATUS))
       {
-        alert("Unable to initialize the shader program: " + gl.getProgramInfoLog(shaderProgram));
+        alert("Unable to initialize the shader program: " + this.gl.getProgramInfoLog(shaderProgram));
       }
 
-      gl.useProgram(shaderProgram);
+      this.gl.useProgram(shaderProgram);
 
-      let vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-      gl.enableVertexAttribArray(vertexPositionAttribute);
+      let vertexPositionAttribute = this.gl.getAttribLocation(shaderProgram, "aVertexPosition");
+      this.gl.enableVertexAttribArray(vertexPositionAttribute);
 
-      let vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
-
-      Shader.AllShaders.push({ shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute });
+      Shader.AllShaders[name] = { shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute };
   };
 
-  private GetShader (gl, file, type)
+  private GetShader (file: string, type: string)
   {
       let shaderSource;
 
@@ -41,11 +46,11 @@ export class Shader
       let shader;
       if (type === this.SHADER_TYPE_FRAGMENT)
       {
-          shader = gl.createShader(gl.FRAGMENT_SHADER);
+          shader = this.gl.createShader(this.gl.FRAGMENT_SHADER);
       }
       else if (type === this.SHADER_TYPE_VERTEX)
       {
-          shader = gl.createShader(gl.VERTEX_SHADER);
+          shader = this.gl.createShader(this.gl.VERTEX_SHADER);
       }
       else
       {
@@ -53,15 +58,15 @@ export class Shader
       }
 
       // Send the source to the shader object
-      gl.shaderSource(shader, shaderSource);
+      this.gl.shaderSource(shader, shaderSource);
 
       // Compile the shader program
-      gl.compileShader(shader);
+      this.gl.compileShader(shader);
 
       //if things didn't go so well alert
-      if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS))
+      if (!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS))
       {
-          alert("An error occurred compiling the shaders: " + gl.getShaderInfoLog(shader));
+          alert("An error occurred compiling the shaders: " + this.gl.getShaderInfoLog(shader));
           return null;
       }
 

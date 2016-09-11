@@ -3,6 +3,9 @@ import {Color} from "Color";
 import {Matrix4x4} from "Matrix4x4";
 import {Vector3} from "Vector3";
 
+import {screenWidth} from "WebGLTS";
+import {screenHeight} from "WebGLTS";
+
 export class Camera
 {
     public fieldOfView = 120;
@@ -16,15 +19,15 @@ export class Camera
     public pMatrix;
 
     //background color of camera
-    public background = Color.White;
+    public backgroundColor = Color.Black;
 
-    public Init(gl)
+    public Init(gl: WebGLRenderingContext)
     {
         //SetPerspective
         this.pMatrix = Matrix4x4.Identity();
-        this.pMatrix.matrix = Utils.makePerspective(this.fieldOfView, gl.viewportWidth / gl.viewportHeight, this.znear, this.zfar);
+        this.pMatrix.matrix = Utils.makePerspective(this.fieldOfView, screenWidth / screenHeight, this.znear, this.zfar);
 
-        gl.clearColor(this.background.r, this.background.g, this.background.b, this.background.a);
+        gl.clearColor(this.backgroundColor.r, this.backgroundColor.g, this.backgroundColor.b, this.backgroundColor.a);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     }
 

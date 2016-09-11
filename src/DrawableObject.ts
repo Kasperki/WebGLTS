@@ -15,8 +15,8 @@ export class DrawableObject
     public rot: number = 0; //RotationDegrees
     public axis: Vector3 = Vector3.Zero; //Axis where to rotate
 
-    public color: Color;
-    public shader;
+    public color: Color; //Color
+    public shader; //Current shader
 
     public mesh: Mesh = new Mesh();
     private lastVertices: Vector3[];
@@ -28,7 +28,7 @@ export class DrawableObject
     protected mvUniform;
     protected vColorLocation;
 
-    constructor(gl, shader, position: Vector3, color: Color)
+    constructor(gl: WebGLRenderingContext, shader: WebGLProgram, position: Vector3, color: Color)
     {
         this.gl = gl;
         this.shader = shader;
@@ -51,9 +51,10 @@ export class DrawableObject
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.squareVertexPositionBuffer);
         this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.mesh.Flatten()), this.gl.DYNAMIC_DRAW);
 
-        //this.gl.setNormals();
+        //Calculate and set mesh normals
     }
 
+    //TODO CHANGE THIS TO MESH.
     private modifyVertices()
     {
         if (this.mesh.vertices !== this.lastVertices)
@@ -61,6 +62,8 @@ export class DrawableObject
             this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.squareVertexPositionBuffer);
             this.gl.bufferSubData(this.gl.ARRAY_BUFFER, 0, new Float32Array(this.mesh.Flatten()));
             this.lastVertices = this.mesh.vertices.slice();
+
+            //ReCalculateNormals?
         }
     }
 
@@ -76,7 +79,7 @@ export class DrawableObject
         mvMatrix.Translate(this.position);
 
         //Rotate
-        mvMatrix.Rotate(this.rot, this.axis); //TODO Add someway to change.
+        mvMatrix.Rotate(this.rot, this.axis); //TODO Add goodway to change.
 
         //Scale
         mvMatrix.Scale(this.scale);

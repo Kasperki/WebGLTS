@@ -1,6 +1,6 @@
 import {Vector3} from "Vector3";
 
-const glMatrixEPSILON = 0.000001;
+const glMatrixEPSILON = 0.000001; //Typescript 2.0 readonly inside class?
 
 /**
  * Matrix

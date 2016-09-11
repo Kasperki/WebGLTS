@@ -5,6 +5,7 @@ import {Vector3} from "Vector3";
 import {Pyramid3D} from "Pyramid3D";
 import {Color} from "Color";
 import {Input} from "Input/Input";
+import {Time} from "Time";
 import {Shader} from "Shaders";
 
 //TODO MAKE ABSTRACT
@@ -14,7 +15,7 @@ export class Scene
     public gameObjects: DrawableObject[];
     public mainCamera: Camera;
 
-    private gl;
+    private gl: WebGLRenderingContext;
 
     public Init(gl: WebGLRenderingContext): void
     {
@@ -23,12 +24,12 @@ export class Scene
 
         this.gameObjects = [];
 
-        let squareLength = 100;
-        for (let y = -5; y < 5; y++)
+        let squareLength = 150;
+        for (let y = -8; y < 8; y++)
         {
             for (let x = 0; x < squareLength; x++)
             {
-                this.gameObjects.push(new Pyramid3D(gl, Shader.AllShaders[(x % 2 === 0 ? 0 : 1 )], new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
+                this.gameObjects.push(new Pyramid3D(gl, Shader.AllShaders[(x % 2 === 0 ? "normal" : "pink" )], new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
             }
         }
     }
@@ -45,15 +46,15 @@ export class Scene
         for (let i = 0; i < this.gameObjects.length; i++)
         {
             this.gameObjects[i].color = new Color(i / this.gameObjects.length, Math.sin(this.a), Math.tan(this.a), 1);
-            this.gameObjects[i].mesh.vertices[0] = new Vector3(0, Math.cos(this.a) * 10, 0);
-            this.gameObjects[i].mesh.vertices[3] = new Vector3(0, Math.cos(this.a) * 10, 0);
-            this.gameObjects[i].mesh.vertices[6] = new Vector3(0, Math.cos(this.a) * 10, 0);
+            //this.gameObjects[i].mesh.vertices[0] = new Vector3(0, Math.cos(this.a) * 10, 0);
+            //this.gameObjects[i].mesh.vertices[3] = new Vector3(0, Math.cos(this.a) * 10, 0);
+            //this.gameObjects[i].mesh.vertices[6] = new Vector3(0, Math.cos(this.a) * 10, 0);
 
             //let pos = new Vector3(this.gameObjects[i].position.x * Math.tan(this.a), this.gameObjects[i].position.y, -20 + this.gameObjects[i].position.z * Math.sin(this.a));
             //this.gameObjects[i].position = pos;
 
-            //this.gameObjects[i].axis = new Vector3(1, 1, 0);
-            //this.gameObjects[i].rot = this.a * 100;
+            this.gameObjects[i].axis = new Vector3(1, 1, 0);
+            this.gameObjects[i].rot = this.a * 100;
         }
 
         if (Input.GetKey("A"))
