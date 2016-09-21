@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
 
+    <link rel="stylesheet" type="text/css" href="style.css">
+
     <script  src="require.js"></script>
     <script>
         requirejs.config({
@@ -11,17 +13,170 @@
 
         requirejs(['build/WebGLTS.js'], function(webgl) {
             webgl.start();
+
+            //Project stats
+            setInterval(function()
+            {   
+                var stats = webgl.getStats();
+
+                document.getElementById("fps").innerHTML = stats.fps;
+                document.getElementById("deltaTime").innerHTML = stats.deltaTime;
+                document.getElementById("time").innerHTML = stats.time;
+                document.getElementById("objects").innerHTML = stats.objects;
+                document.getElementById("vertices").innerHTML = stats.vertices;
+            }, 10);
+
+
+// setInterval(function()
+         //   {   
+            var gameObjects = webgl.getGameObjects();
+            var inspectorInterval = function(){};
+            var eventObject;
+            hierarchyBody.innerHTML = '';
+            
+            for (var i = 0; i < gameObjects.length; i++)
+            {
+                (function () {
+                    var index = i;
+                    var tr = document.createElement("tr");
+                    var td = document.createElement("td");
+                    var text = document.createTextNode(gameObjects[i].name);
+
+                    tr.appendChild(td);
+                    td.appendChild(text);
+                    td.addEventListener("click", function(event) 
+                    { 
+                        if (eventObject != null) 
+                        {
+                            eventObject.classList.remove("active");
+                        }
+
+                        eventObject = event.target;
+                        eventObject.classList.add('active');
+                        clearInterval(inspectorInterval);
+                        inspectorInterval = setInterval( function() { inspectorInfo(index); }, 10 ); 
+                    });
+                    document.getElementById("hierarchyBody").appendChild(tr); 
+                }());
+            }    
+        //}, 1000);
+
+            function inspectorInfo (i) 
+            {
+                var info = webgl.getGameObjectInfo(i);
+                document.getElementById("name").innerHTML = info.name;
+                document.getElementById("rotation").innerHTML = info.rotation.toString();
+                document.getElementById("scale").innerHTML = info.scale.toString();
+                document.getElementById("shader").innerHTML = info.shader.name;
+                document.getElementById("color").innerHTML = info.color.toString();
+
+                //PositionInspector
+                if (document.activeElement.id !== "posX")
+                    document.getElementById("posX").value = info.position.x;
+                
+                if (document.activeElement.id !== "posY")
+                    document.getElementById("posY").value = info.position.y;
+
+                if (document.activeElement.id !== "posZ")
+                    document.getElementById("posZ").value = info.position.z;
+
+                //document.getElementById("posX").removeEventListener("change");
+                document.getElementById("posX").addEventListener("input", function(event) { 
+                    webgl.setGameObjectInfo(i, event.target.value, info.position.y, info.position.z);
+                });
+
+                //document.getElementById("posX").removeEventListener("change");
+                document.getElementById("posY").addEventListener("input", function(event) { 
+                    webgl.setGameObjectInfo(i, info.position.x, event.target.value, info.position.z);
+                });
+
+                //document.getElementById("posX").removeEventListener("change");
+                document.getElementById("posZ").addEventListener("input", function(event) { 
+                    webgl.setGameObjectInfo(i, info.position.x, info.position.y, event.target.value);
+                });
+            }
         });
     </script>
 
     <title>WebGL - Typescript</title>
 </head>
 <body>
-    <!-- WebGL canvas -->
-    <p id="glfps">FPS:</p> <!-- FPS -->
-    <canvas id="glcanvas" width="640" height="480" style="background: red;">
-        Your browser doesn't appear to support the 
-        <code>&lt;canvas&gt;</code> element.
-    </canvas>
+    <div class="container" style="width:1200px">
+        <div style="float:left;width:70%">
+            
+            <!-- Project stats -->
+            <div id="info" >
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>FPS</th>
+                            <th>Deltatime</th>
+                            <th>Gametime</th>
+                            <th>Objects</th>
+                            <th>Vertices</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="fps"></td>
+                            <td id="deltaTime"></td>
+                            <td id="time"></td>
+                            <td id="objects"></td>
+                            <td id="vertices"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- WebGL canvas -->
+            <div id="gameView">
+                <canvas id="glcanvas" width="840" height="480" style="background: red;">
+                    Your browser doesn't appear to support the 
+                    <code>&lt;canvas&gt;</code> element.
+                </canvas>
+            </div>
+
+            <!-- Inspector -->
+            <fieldset class="inspector">
+                <legend>Inspector: <span id="name"></span></legend>
+
+                <div>
+                    <label for="position">Position </label>
+                    <input id="posX" type="number"/>
+                    <input id="posY" type="number"/>
+                    <input id="posZ" type="number"/>
+                </div>
+
+                <div>
+                  <label for="rotation">Rotation </label><p id="rotation"></p>
+                </div>
+
+                <div>
+                    <label for="scale">Scale </label><p id="scale"></p>
+                </div>
+
+                 <div>
+                    <label for="shader">Shader </label><p id="shader"></p>
+                </div>
+
+                <div>
+                    <label for="color">Color </label><p id="color"></p>
+                </div>
+            </fieldset>
+        </div>
+
+        <!-- Hierachy of scene -->
+        <div id="hierarchy" class="scrollable-y" style="float:left;width:30%;">
+            <table class="table selectable">
+                <thead>
+                    <tr>
+                        <th>Hiearachy</th>
+                    </tr>
+                </thead>
+                <tbody id="hierarchyBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>

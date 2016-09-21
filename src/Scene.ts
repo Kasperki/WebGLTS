@@ -17,19 +17,21 @@ export class Scene
 
     private gl: WebGLRenderingContext;
 
-    public Init(gl: WebGLRenderingContext): void
+    public Init(gl: WebGLRenderingContext, name: string): void
     {
         this.gl = gl;
+        this.name = name;
+
         this.mainCamera = new Camera();
 
         this.gameObjects = [];
 
-        let squareLength = 150;
-        for (let y = -8; y < 8; y++)
+        let squareLength = 2;
+        for (let y = -7; y < 7; y++)
         {
             for (let x = 0; x < squareLength; x++)
             {
-                this.gameObjects.push(new Pyramid3D(gl, Shader.AllShaders[(x % 2 === 0 ? "normal" : "pink" )], new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -30 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
+                this.gameObjects.push(new Pyramid3D(gl, Shader.AllShaders[(x % 2 === 0 ? "normal" : "pink" )], "Pyramid-" + y + "-" + x, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -40 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
             }
         }
     }
@@ -56,6 +58,9 @@ export class Scene
             this.gameObjects[i].axis = new Vector3(1, 1, 0);
             this.gameObjects[i].rot = this.a * 100;
         }
+
+        if (Input.GetKey("Delete"))
+            this.gameObjects = this.gameObjects.slice(10);
 
         if (Input.GetKey("A"))
         {

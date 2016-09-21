@@ -21,4 +21,9 @@ export class Color
         this.b = b;
         this.a = a;
     }
+
+    public toString(): string
+    {
+        return "r:" + this.r + " g:" + this.g + " b:" + this.b + " a:" + this.a;
+    }
 }

@@ -1,25 +1,14 @@
-import * as Utils from "Utils";
-import {Camera} from "Camera";
-import {Color} from "Color";
 import {Time} from "Time";
 import {Input} from "Input/Input";
 import {MouseCode} from "Input/MouseCode";
-import {Matrix4x4} from "Matrix4x4";
+import {Screen} from "Screen";
 import {Vector3} from "Vector3";
 
-import {DrawableObject} from "DrawableObject";
-import {Plane} from "Plane";
-import {Triangle} from "Triangle";
-import {Pyramid3D} from "Pyramid3D";
 import {Scene} from "Scene";
-
 import {Shader} from "Shaders";
 
 let gl: WebGLRenderingContext; // A global variable for the WebGL context
 const TARGET_FPS = 60; //Target fps for the webgl program
-
-export let screenWidth: number;
-export let screenHeight: number;
 
 let time: Time;
 let input: Input;
@@ -27,16 +16,20 @@ let scene: Scene;
 
 //TODO - make use of some cool design patterns that I have not used before?
 
- //DEBUG IF DEF... REMOVE FROM RELEASE BUILD for example calculate fps, objects, triangles, vectices. show DRAWCALLS!!!
+//FIX CAMERA IMPORT
+ //DEBUG IF DEF... REMOVE FROM RELEASE BUILD for example calculate triangles, show DRAWCALLS!!!
   //Typescript 2.1 conditional compilation? https://github.com/Microsoft/TypeScript/issues/3538
 
- //Next is calculate normals to mesh?
+ //Next is calculate faces - normals to faces and from that normals to vertices? pass that to shader and draw simple light :)
 
  //Typescript 2.0 has readonly., use that.
+  //Make all methods to use summaries, and strongly type all!
+  //Check all who needs getters & setters
 
  //Nice way to move, rotate, scale
  //Other shapes... interfaces. refactoring BOX, LINE, TRIANGLE : Inherit from DrawableObject, 
   //COMBINE THESE MESHES WITH SAME SHADER TO REDUCE DRAWCALLS!!!
+   //static and dynamic batching?
  //SHADER Modifying
   //textures
   //lightning
@@ -78,8 +71,8 @@ export function start()
       input = new Input();
 
       //Init Starting Scene
-      scene = new Scene(); //TODO LOAD DONT CREATE NEW
-      scene.Init(gl);
+      scene = new Scene(); //TODO LOAD DONT CREATE NEW //LOAD BY NAME?
+      scene.Init(gl, "Scene1");
 
       setInterval(GameLoop, 1000 / TARGET_FPS);
     }
@@ -92,8 +85,8 @@ function initWebGL(canvas: HTMLCanvasElement): WebGLRenderingContext
   try {
     // Try to grab the standard context. If it fails, fallback to experimental.
     gl = <WebGLRenderingContext>canvas.getContext("webgl", { alpha: false }) || <WebGLRenderingContext>canvas.getContext("experimental-webgl", { alpha: false });
-    screenWidth = canvas.width;
-    screenHeight = canvas.height;
+    Screen.width = canvas.width;
+    Screen.height = canvas.height;
   }
   catch (e) {}
 
@@ -121,7 +114,7 @@ function GameLoop()
   input.Update();
   time.countDeltaTime();
 
-  document.getElementById("glfps").innerHTML = "FPS:" + countFPS() + " Dtime:" + Time.getDeltaTime() + " time:" + Time.getTime() + " objects:" + scene.gameObjects.length;
+  countFPS();
 }
 
 let fps: number = 0, currentFPS: number = 0, frameTime: number = 0;
@@ -139,4 +132,52 @@ function countFPS(): number
   }
 
   return currentFPS;
+}
+
+export function getStats()
+{
+  let vertices = 0;
+
+  for (let i = 0; i < scene.gameObjects.length; i++)
+  {
+    vertices += scene.gameObjects[i].mesh.vertices.length;
+  }
+
+  let stats =
+  {
+    fps: currentFPS,
+    deltaTime: Time.getDeltaTime(),
+    time: Time.getTime(),
+    objects: scene.gameObjects.length,
+    vertices: vertices,
+  };
+  return stats;
+}
+
+export function getGameObjects()
+{
+  return scene.gameObjects;
+}
+
+export function getGameObjectInfo(i)
+{
+  let info = {
+    id: scene.gameObjects[i].id,
+    name: scene.gameObjects[i].name,
+    position: scene.gameObjects[i].position,
+    rotation: scene.gameObjects[i].axis,
+    scale: scene.gameObjects[i].scale,
+    shader: scene.gameObjects[i].shader,
+    color: scene.gameObjects[i].color,
+  };
+
+  scene.gameObjects[i].selected = true;
+  return info;
+}
+
+export function setGameObjectInfo(i, x, y , z)
+{
+    scene.gameObjects[i].position.x = x;
+    scene.gameObjects[i].position.y = y;
+    scene.gameObjects[i].position.z = z;
 }

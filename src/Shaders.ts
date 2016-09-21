@@ -6,6 +6,8 @@ export class Shader
 
   private gl: WebGLRenderingContext;
 
+  //TODO MAKE Abstraction of shaderProgram, WebGLProgram
+
   constructor (gl: WebGLRenderingContext)
   {
       this.gl = gl;
@@ -32,7 +34,7 @@ export class Shader
       let vertexPositionAttribute = this.gl.getAttribLocation(shaderProgram, "aVertexPosition");
       this.gl.enableVertexAttribArray(vertexPositionAttribute);
 
-      Shader.AllShaders[name] = { shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute };
+      Shader.AllShaders[name] = { name: name, shaderProgram: shaderProgram, vertexPositionAttribute: vertexPositionAttribute };
   };
 
   private GetShader (file: string, type: string)

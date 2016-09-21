@@ -1,6 +1,5 @@
 import {Color} from "./Color";
 import {Vector3} from "./Vector3";
-import {Matrix4x4} from "./Matrix4x4";
 import {DrawableObject} from "./DrawableObject";
 
 export class Triangle extends DrawableObject

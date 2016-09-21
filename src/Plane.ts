@@ -1,14 +1,13 @@
 import {Color} from "./Color";
 import {Vector3} from "./Vector3";
-import {Matrix4x4} from "./Matrix4x4";
 import {DrawableObject} from "./DrawableObject";
 
 export class Plane extends DrawableObject
 {
 
-    constructor(gl, shader, position: Vector3, color: Color)
+    constructor(gl, shader, name: string, position: Vector3, color: Color)
     {
-        super(gl, shader, position, color);
+        super(gl, shader, name, position, color);
         this.InitBuffers();
     }
 
