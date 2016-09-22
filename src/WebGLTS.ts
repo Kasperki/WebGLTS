@@ -175,9 +175,24 @@ export function getGameObjectInfo(i)
   return info;
 }
 
-export function setGameObjectInfo(i, x, y , z)
+export function setGameObjectPosition(i, x, y , z)
 {
     scene.gameObjects[i].position.x = x;
     scene.gameObjects[i].position.y = y;
     scene.gameObjects[i].position.z = z;
 }
+
+export function setGameObjectScale(i, x, y , z)
+{
+    scene.gameObjects[i].scale.x = x;
+    scene.gameObjects[i].scale.y = y;
+    scene.gameObjects[i].scale.z = z;
+}
+
+export function setGameObjectColor(i, r, g , b)
+{
+    scene.gameObjects[i].color.r = r;
+    scene.gameObjects[i].color.g = g;
+    scene.gameObjects[i].color.b = b;
+}
+

@@ -32,6 +32,8 @@
             var gameObjects = webgl.getGameObjects();
             var inspectorInterval = function(){};
             var eventObject;
+            var info = {};
+
             hierarchyBody.innerHTML = '';
             
             for (var i = 0; i < gameObjects.length; i++)
@@ -44,6 +46,8 @@
 
                     tr.appendChild(td);
                     td.appendChild(text);
+
+                    //Add inspector 
                     td.addEventListener("click", function(event) 
                     { 
                         if (eventObject != null) 
@@ -53,9 +57,56 @@
 
                         eventObject = event.target;
                         eventObject.classList.add('active');
+
+                        removeEventListener("posX");
+                        document.getElementById("posX").addEventListener("input", function(event) { 
+                            webgl.setGameObjectPosition(index, event.target.value, info.position.y, info.position.z);
+                        });
+
+                        removeEventListener("posY");
+                        document.getElementById("posY").addEventListener("input", function(event) { 
+                            webgl.setGameObjectPosition(index, info.position.x, event.target.value, info.position.z);
+                        });
+
+                        removeEventListener("posZ");
+                        document.getElementById("posZ").addEventListener("input", function(event) { 
+                            webgl.setGameObjectPosition(index, info.position.x, info.position.y, event.target.value);
+                        });
+
+                        removeEventListener("scaleX");
+                        document.getElementById("scaleX").addEventListener("input", function(event) { 
+                            webgl.setGameObjectScale(index, event.target.value, info.scale.y, info.scale.z);
+                        });
+
+                        removeEventListener("scaleY");
+                        document.getElementById("scaleY").addEventListener("input", function(event) { 
+                            webgl.setGameObjectScale(index, info.scale.x, event.target.value, info.scale.z);
+                        });
+
+                        removeEventListener("scaleZ");
+                        document.getElementById("scaleZ").addEventListener("input", function(event) { 
+                            webgl.setGameObjectScale(index, info.scale.x, info.scale.y, event.target.value);
+                        });
+
+                        removeEventListener("colorR");
+                        document.getElementById("colorR").addEventListener("input", function(event) { 
+                            webgl.setGameObjectColor(index, event.target.value, info.color.g, info.color.b);
+                        });
+
+                        removeEventListener("colorG");
+                        document.getElementById("colorG").addEventListener("input", function(event) { 
+                            webgl.setGameObjectColor(index, info.color.r, event.target.value, info.color.b);
+                        });
+
+                        removeEventListener("colorB");
+                        document.getElementById("colorB").addEventListener("input", function(event) { 
+                            webgl.setGameObjectColor(index, info.color.r, info.color.g, event.target.value);
+                        });
+
                         clearInterval(inspectorInterval);
                         inspectorInterval = setInterval( function() { inspectorInfo(index); }, 10 ); 
                     });
+
                     document.getElementById("hierarchyBody").appendChild(tr); 
                 }());
             }    
@@ -63,12 +114,10 @@
 
             function inspectorInfo (i) 
             {
-                var info = webgl.getGameObjectInfo(i);
+                info = webgl.getGameObjectInfo(i);
                 document.getElementById("name").innerHTML = info.name;
                 document.getElementById("rotation").innerHTML = info.rotation.toString();
-                document.getElementById("scale").innerHTML = info.scale.toString();
                 document.getElementById("shader").innerHTML = info.shader.name;
-                document.getElementById("color").innerHTML = info.color.toString();
 
                 //PositionInspector
                 if (document.activeElement.id !== "posX")
@@ -80,20 +129,32 @@
                 if (document.activeElement.id !== "posZ")
                     document.getElementById("posZ").value = info.position.z;
 
-                //document.getElementById("posX").removeEventListener("change");
-                document.getElementById("posX").addEventListener("input", function(event) { 
-                    webgl.setGameObjectInfo(i, event.target.value, info.position.y, info.position.z);
-                });
+                //ScaleInspector
+                if (document.activeElement.id !== "scaleX")
+                    document.getElementById("scaleX").value = info.scale.x;
+                
+                if (document.activeElement.id !== "scaleY")
+                    document.getElementById("scaleY").value = info.scale.y;
 
-                //document.getElementById("posX").removeEventListener("change");
-                document.getElementById("posY").addEventListener("input", function(event) { 
-                    webgl.setGameObjectInfo(i, info.position.x, event.target.value, info.position.z);
-                });
+                if (document.activeElement.id !== "scaleZ")
+                    document.getElementById("scaleZ").value = info.scale.z;
 
-                //document.getElementById("posX").removeEventListener("change");
-                document.getElementById("posZ").addEventListener("input", function(event) { 
-                    webgl.setGameObjectInfo(i, info.position.x, info.position.y, event.target.value);
-                });
+                //ColorInspector
+                if (document.activeElement.id !== "colorR")
+                    document.getElementById("colorR").value = info.color.r;
+                
+                if (document.activeElement.id !== "colorG")
+                    document.getElementById("colorG").value = info.color.g;
+
+                if (document.activeElement.id !== "colorB")
+                    document.getElementById("colorB").value = info.color.b;
+            }
+
+            function removeEventListener(id) 
+            {
+                var old_element = document.getElementById(id);
+                var new_element = old_element.cloneNode(true);
+                old_element.parentNode.replaceChild(new_element, old_element);
             }
         });
     </script>
@@ -137,30 +198,48 @@
             </div>
 
             <!-- Inspector -->
-            <fieldset class="inspector">
+            <fieldset id="inspector" class="inspector">
                 <legend>Inspector: <span id="name"></span></legend>
 
-                <div>
+                <div style="float:left;width:10%;">
                     <label for="position">Position </label>
+                </div>
+                <div style="float:left;width:90%;">
                     <input id="posX" type="number"/>
                     <input id="posY" type="number"/>
                     <input id="posZ" type="number"/>
                 </div>
 
-                <div>
-                  <label for="rotation">Rotation </label><p id="rotation"></p>
+                <div style="float:left;width:10%;">
+                    <label for="rotation">Rotation </label>
+                </div>
+                <div style="float:left;width:90%;">
+                  <p id="rotation"></p>
                 </div>
 
-                <div>
-                    <label for="scale">Scale </label><p id="scale"></p>
+                <div style="float:left;width:10%;">
+                    <label for="scale">Scale </label>
+                </div>
+                <div style="float:left;width:90%;">
+                    <input id="scaleX" type="number"/>
+                    <input id="scaleY" type="number"/>
+                    <input id="scaleZ" type="number"/>
                 </div>
 
-                 <div>
-                    <label for="shader">Shader </label><p id="shader"></p>
+                <div style="float:left;width:10%;">
+                    <label for="shader">Shader </label>
+                </div>
+                <div style="float:left;width:90%;">
+                    <p id="shader"></p>
                 </div>
 
-                <div>
-                    <label for="color">Color </label><p id="color"></p>
+                <div style="float:left;width:10%;">
+                    <label for="color">Color </label>
+                </div>
+                <div style="float:left;width:90%;">
+                    <input id="colorR" type="number" step="0.01"/>
+                    <input id="colorG" type="number" step="0.01"/>
+                    <input id="colorB" type="number" step="0.01"/>
                 </div>
             </fieldset>
         </div>

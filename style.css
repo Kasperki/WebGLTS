@@ -5,6 +5,10 @@ body {
     font-size: 15px;
 }
 
+label, p {
+    margin: 0 0;
+}
+
 strong {
     color: rgb(150, 93, 230);
     font-weight: 800;

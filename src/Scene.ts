@@ -31,7 +31,7 @@ export class Scene
         {
             for (let x = 0; x < squareLength; x++)
             {
-                this.gameObjects.push(new Pyramid3D(gl, Shader.AllShaders[(x % 2 === 0 ? "normal" : "pink" )], "Pyramid-" + y + "-" + x, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -40 * Math.random()), new Color(x / squareLength * 2, x / squareLength, x / squareLength * 2, 1)));
+                this.gameObjects.push(new Pyramid3D(gl, Shader.AllShaders[(x % 2 === 0 ? "normal" : "pink" )], "Pyramid-" + y + "-" + x, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -40 * Math.random()), Color.Green));
             }
         }
     }
@@ -47,7 +47,8 @@ export class Scene
         //IterateAndDrawAllObjects
         for (let i = 0; i < this.gameObjects.length; i++)
         {
-            this.gameObjects[i].color = new Color(i / this.gameObjects.length, Math.sin(this.a), Math.tan(this.a), 1);
+            if (i < this.gameObjects.length / 2)
+                this.gameObjects[i].color = new Color(i / this.gameObjects.length, Math.sin(this.a), Math.tan(this.a), 1);
             //this.gameObjects[i].mesh.vertices[0] = new Vector3(0, Math.cos(this.a) * 10, 0);
             //this.gameObjects[i].mesh.vertices[3] = new Vector3(0, Math.cos(this.a) * 10, 0);
             //this.gameObjects[i].mesh.vertices[6] = new Vector3(0, Math.cos(this.a) * 10, 0);
@@ -60,7 +61,7 @@ export class Scene
         }
 
         if (Input.GetKey("Delete"))
-            this.gameObjects = this.gameObjects.slice(10);
+            this.gameObjects = this.gameObjects.slice(5);
 
         if (Input.GetKey("A"))
         {
