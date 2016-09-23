@@ -1,19 +1,43 @@
-import {DrawableObject} from "DrawableObject";
-import {Camera} from "Camera";
-import {Matrix4x4} from "Matrix4x4";
-import {Vector3} from "Vector3";
-import {Pyramid3D} from "Pyramid3D";
-import {Color} from "Color";
-import {Input} from "Input/Input";
-import {Time} from "Time";
-import {Shader} from "Shaders";
+import {GameObject} from "./GameObject";
+import {Camera} from "./Camera";
+import {Matrix4x4} from "./Matrix4x4";
+import {Vector3} from "./Vector3";
+import {Pyramid3D} from "./Pyramid3D";
+import {Color} from "./Color";
+import {Input} from "./Input/Input";
+import {Time} from "./Time";
+import {Shader} from "./Shaders";
 
 //TODO MAKE ABSTRACT
 export class Scene
 {
     public name: string;
-    public gameObjects: DrawableObject[];
     public mainCamera: Camera;
+
+    private _gameObjects: GameObject[];
+
+    get gameObjects() : GameObject[]  
+    {
+        return this._gameObjects;
+    }
+
+    set gameObjects(gameObjects :GameObject[]) 
+    {
+        this._gameObjects = gameObjects;
+        //TODO UPDATE HIEARACHY
+    }
+
+    public AddGameObject(obj :GameObject) 
+    {
+        this._gameObjects.push(obj);
+        //TODO UPDATE HIEARACHY
+    }
+
+    public RemoveGameObject(obj :GameObject) 
+    {
+        //TODO UPDATE HIEARACHY
+        obj = undefined;
+    }
 
     private gl: WebGLRenderingContext;
 
@@ -31,7 +55,7 @@ export class Scene
         {
             for (let x = 0; x < squareLength; x++)
             {
-                this.gameObjects.push(new Pyramid3D(gl, Shader.AllShaders[(x % 2 === 0 ? "normal" : "pink" )], "Pyramid-" + y + "-" + x, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -40 * Math.random()), Color.Green));
+                this.gameObjects.push(new Pyramid3D(gl, Shader.AllShaders[(x % 2 === 0 ? "normal" : "pink" )], "Pyramiddd-" + y + "-" + x, new Vector3(-12.5 + x, y * 2 + x / squareLength * 2, -40 * Math.random()), Color.Green));
             }
         }
     }
@@ -56,8 +80,8 @@ export class Scene
             //let pos = new Vector3(this.gameObjects[i].position.x * Math.tan(this.a), this.gameObjects[i].position.y, -20 + this.gameObjects[i].position.z * Math.sin(this.a));
             //this.gameObjects[i].position = pos;
 
-            this.gameObjects[i].axis = new Vector3(1, 1, 0);
-            this.gameObjects[i].rot = this.a * 100;
+            this.gameObjects[i].tranform.axis = new Vector3(1, 1, 0);
+            this.gameObjects[i].tranform.rot = this.a * 100;
         }
 
         if (Input.GetKey("Delete"))

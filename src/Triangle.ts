@@ -1,13 +1,13 @@
 import {Color} from "./Color";
 import {Vector3} from "./Vector3";
-import {DrawableObject} from "./DrawableObject";
+import {GameObject} from "./GameObject";
 
-export class Triangle extends DrawableObject
+export class Triangle extends GameObject
 {
 
-    constructor(gl, shader, position: Vector3, color: Color)
+    constructor(gl, shader, name: string, position: Vector3, color: Color)
     {
-        super(gl, shader, position, color);
+        super(gl, shader, name, position, color);
         this.InitBuffers();
     }
 

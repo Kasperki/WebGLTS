@@ -1,3 +1,5 @@
+import {Transform} from "./Transform";
+import {Component} from "./Component";
 import {Color} from "./Color";
 import {Vector3} from "./Vector3";
 import {Matrix4x4} from "./Matrix4x4";
@@ -9,15 +11,17 @@ import * as utils from "./Utils";
   //Shader
  //RenderMesh
 
-export class DrawableObject
+//Components[]
+ //{ Transform, Color, Mesh, Shader; }
+
+export class GameObject
 {
     public id: string; //ID of the object
-    public name: string; //Name of the gameobject
-    public position: Vector3; //Position in world
-    public scale: Vector3 = Vector3.One; //Object scale
-    public rot: number = 0; //RotationDegrees
-    public axis: Vector3 = Vector3.Zero; //Axis where to rotate
+    public name: string; //Name of the GameObject
 
+    public components: Component[];
+
+    public tranform: Transform; //Position rotation scale
     public color: Color; //Color
     public shader; //Current shader
 
@@ -40,8 +44,12 @@ export class DrawableObject
 
         this.id = utils.uuid();
         this.name = name;
-        this.position = position;
+
+        this.tranform = new Transform();
+        this.tranform.position = position;
         this.color = color;
+
+        this.components = [this.tranform, this.color];
 
         this.gl.useProgram(this.shader.shaderProgram);
 
@@ -84,13 +92,13 @@ export class DrawableObject
 
         //Translate Position
         let mvMatrix = Matrix4x4.Identity();
-        mvMatrix.Translate(this.position);
+        mvMatrix.Translate(this.tranform.position);
 
         //Rotate
-        mvMatrix.Rotate(this.rot, this.axis); //TODO Add goodway to change.
+        mvMatrix.Rotate(this.tranform.rot, this.tranform.axis); //TODO Add goodway to change.
 
         //Scale
-        mvMatrix.Scale(this.scale);
+        mvMatrix.Scale(this.tranform.scale);
 
         //DrawPosition
         this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.vertexPositionBuffer);

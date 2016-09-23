@@ -1,8 +1,8 @@
 export class Shader
 {
   public static AllShaders = [];
-  private SHADER_TYPE_FRAGMENT = "x-shader/x-fragment";
-  private SHADER_TYPE_VERTEX = "x-shader/x-vertex";
+  readonly SHADER_TYPE_FRAGMENT = "x-shader/x-fragment";
+  readonly SHADER_TYPE_VERTEX = "x-shader/x-vertex";
 
   private gl: WebGLRenderingContext;
 

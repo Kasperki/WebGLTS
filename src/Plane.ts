@@ -1,8 +1,8 @@
 import {Color} from "./Color";
 import {Vector3} from "./Vector3";
-import {DrawableObject} from "./DrawableObject";
+import {GameObject} from "./GameObject";
 
-export class Plane extends DrawableObject
+export class Plane extends GameObject
 {
 
     constructor(gl, shader, name: string, position: Vector3, color: Color)

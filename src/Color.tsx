@@ -1,7 +1,11 @@
+import {Component} from "./Component";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+
 /**
  * Color
  */
-export class Color
+export class Color extends Component
 {
     private _r: number;
 
@@ -87,6 +91,8 @@ export class Color
 
     constructor(r: number, g: number, b: number, a: number)
     {
+        super();
+
         this.r = r;
         this.g = g;
         this.b = b;
@@ -96,5 +102,48 @@ export class Color
     public toString(): string
     {
         return "r:" + this.r + " g:" + this.g + " b:" + this.b + " a:" + this.a;
+    }
+
+    public GenerateInspectorDOM()
+    {
+        var ColorInspector = "ColorInspector";
+        var app = 
+        <ColorInspector>
+            <div className="inspectorLabel">
+                <label>Color </label>
+            </div>
+            <div className="inspectorData">
+                <input id="colorR" type="number" step="0.01" value={this.r}/>
+                <input id="colorG" type="number" step="0.01"/>
+                <input id="colorB" type="number" step="0.01"/>
+            </div>
+        </ColorInspector>;
+
+
+        var Timer = React.createClass({
+            getInitialState: function() {
+                return {r: 666};
+            },
+            tick: function() {
+                this.setState({r: this.r});
+            },
+            componentDidMount: function() {
+                this.interval = setInterval(this.tick, 1000);
+            },
+            componentWillUnmount: function() {
+                clearInterval(this.interval);
+            },
+            render: function() {
+                return (
+                <div>Seconds Elapsed: {this.state.r}</div>
+                );
+            }
+        });
+
+
+        ReactDOM.render(
+            <Timer />,
+            document.getElementById('fuckme')
+        );
     }
 }

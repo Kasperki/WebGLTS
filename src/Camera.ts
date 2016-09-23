@@ -1,8 +1,8 @@
-import * as Utils from "Utils";
-import {Color} from "Color";
-import {Matrix4x4} from "Matrix4x4";
-import {Vector3} from "Vector3";
-import {Screen} from "Screen";
+import * as Utils from "./Utils";
+import {Color} from "./Color";
+import {Matrix4x4} from "./Matrix4x4";
+import {Vector3} from "./Vector3";
+import {Screen} from "./Screen";
 
 export class Camera
 {

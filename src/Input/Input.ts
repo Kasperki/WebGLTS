@@ -1,5 +1,5 @@
-import {Vector3}  from "Vector3";
-import {MouseCode} from "MouseCode";
+import {Vector3}  from "../Vector3";
+import {MouseCode} from "./MouseCode";
 
 /**
  * Input

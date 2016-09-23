@@ -1,11 +1,11 @@
-import {Time} from "Time";
-import {Input} from "Input/Input";
-import {MouseCode} from "Input/MouseCode";
-import {Screen} from "Screen";
-import {Vector3} from "Vector3";
+import {Time} from "./Time";
+import {Input} from "./Input/Input";
+import {MouseCode} from "./Input/MouseCode";
+import {Screen} from "./Screen";
+import {Vector3} from "./Vector3";
 
-import {Scene} from "Scene";
-import {Shader} from "Shaders";
+import {Scene} from "./Scene";
+import {Shader} from "./Shaders";
 
 let gl: WebGLRenderingContext; // A global variable for the WebGL context
 const TARGET_FPS = 60; //Target fps for the webgl program
@@ -16,8 +16,9 @@ let scene: Scene;
 
 //TODO - make use of some cool design patterns that I have not used before?
 
-//FIX CAMERA IMPORT
  //DEBUG IF DEF... REMOVE FROM RELEASE BUILD for example calculate triangles, show DRAWCALLS!!!
+  //GAMEOBJECT full of components, components define what it will look like in inspector, use REACT.JS?
+
   //Typescript 2.1 conditional compilation? https://github.com/Microsoft/TypeScript/issues/3538
 
  //Next is calculate faces - normals to faces and from that normals to vertices? pass that to shader and draw simple light :)
@@ -164,9 +165,9 @@ export function getGameObjectInfo(i)
   let info = {
     id: scene.gameObjects[i].id,
     name: scene.gameObjects[i].name,
-    position: scene.gameObjects[i].position,
-    rotation: scene.gameObjects[i].axis,
-    scale: scene.gameObjects[i].scale,
+    position: scene.gameObjects[i].tranform.position,
+    rotation: scene.gameObjects[i].tranform.axis,
+    scale: scene.gameObjects[i].tranform.scale,
     shader: scene.gameObjects[i].shader,
     color: scene.gameObjects[i].color,
   };
@@ -177,16 +178,16 @@ export function getGameObjectInfo(i)
 
 export function setGameObjectPosition(i, x, y , z)
 {
-    scene.gameObjects[i].position.x = x;
-    scene.gameObjects[i].position.y = y;
-    scene.gameObjects[i].position.z = z;
+    scene.gameObjects[i].tranform.position.x = x;
+    scene.gameObjects[i].tranform.position.y = y;
+    scene.gameObjects[i].tranform.position.z = z;
 }
 
 export function setGameObjectScale(i, x, y , z)
 {
-    scene.gameObjects[i].scale.x = x;
-    scene.gameObjects[i].scale.y = y;
-    scene.gameObjects[i].scale.z = z;
+    scene.gameObjects[i].tranform.scale.x = x;
+    scene.gameObjects[i].tranform.scale.y = y;
+    scene.gameObjects[i].tranform.scale.z = z;
 }
 
 export function setGameObjectColor(i, r, g , b)

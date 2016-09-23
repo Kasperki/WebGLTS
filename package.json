@@ -20,5 +20,9 @@
     "typescript"
   ],
   "author": "https://twitter.com/Kassu27",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  }
 }
